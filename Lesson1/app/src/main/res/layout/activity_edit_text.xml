@@ -8,11 +8,12 @@
     tools:context=".EditTextActivity">
 
     <EditText
-        android:id="@+id/edit_text1"
+        android:id="@+id/edit_text_with_ems_1"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:inputType="text"
-        android:ems="20"
+        android:ems="18"
+        android:textSize="10sp"
         android:hint="Enter Text"
         android:gravity="right" />
 
@@ -65,11 +66,12 @@
         android:gravity="right" />
 
     <EditText
-        android:id="@+id/edit_text8"
+        android:id="@+id/edit_text_with_ems_8"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:inputType="textCapCharacters"
         android:hint="Enter"
+        android:textSize="22sp"
         android:ems="10"
         android:gravity="right" />
 
