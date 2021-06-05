@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".EditTextActivity">
+
+    <EditText
+        android:id="@+id/edit_text_with_ems_1"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:inputType="text"
+        android:ems="18"
+        android:textSize="10sp"
+        android:hint="Enter Text"
+        android:gravity="right" />
+
+    <EditText
+        android:id="@+id/edit_text2"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="textPersonName"
+        android:hint="Enter Text Personal Name"
+        android:gravity="right" />
+
+    <EditText
+        android:id="@+id/edit_text3"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="phone"
+        android:hint="Enter Phone"
+        android:gravity="right" />
+
+    <EditText
+        android:id="@+id/edit_text4"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="number"
+        android:hint="Enter Number"
+        android:gravity="right" />
+
+    <EditText
+        android:id="@+id/edit_text5"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="textPassword"
+        android:hint="Enter Password"
+        android:gravity="right" />
+
+    <EditText
+        android:id="@+id/edit_text6"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="textEmailAddress"
+        android:hint="Enter Email"
+        android:gravity="right" />
+
+    <EditText
+        android:id="@+id/edit_text7"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="textUri"
+        android:hint="Enter URI"
+        android:gravity="right" />
+
+    <EditText
+        android:id="@+id/edit_text_with_ems_8"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:inputType="textCapCharacters"
+        android:hint="Enter"
+        android:textSize="22sp"
+        android:ems="10"
+        android:gravity="right" />
+
+    <CalendarView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:firstDayOfWeek="2"/>
+
+</LinearLayout>
