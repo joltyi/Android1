@@ -60,7 +60,7 @@
             android:textAlignment="center"
             android:textSize="30sp"
             android:textColor="@color/button_number_color"
-            app:layout_constraintBottom_toTopOf="@+id/button_backspace"
+            app:layout_constraintBottom_toTopOf="@+id/keyboard_layout"
             app:layout_constraintEnd_toStartOf="@+id/input_value_2" />
 
         <TextView
@@ -77,7 +77,7 @@
             android:textAlignment="textEnd"
             android:textSize="30sp"
             android:textColor="@android:color/black"
-            app:layout_constraintBottom_toTopOf="@+id/button_backspace"
+            app:layout_constraintBottom_toTopOf="@+id/keyboard_layout"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </LinearLayout>
