@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,14 +16,14 @@
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
                 android:text="@string/button_clear"
-                android:textSize="@dimen/button_text_size"
-                style="?android:attr/buttonBarButtonStyle" />
+                app:backgroundTint="@color/button_operation_color"
+                android:textSize="@dimen/button_text_size" />
 
             <Button
                 android:id="@+id/button_root"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_operation_color"
+                app:backgroundTint="@color/button_operation_color"
                 android:text="@string/button_root"
                 android:textSize="@dimen/button_text_size" />
 
@@ -30,7 +31,7 @@
                 android:id="@+id/button_pow"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_operation_color"
+                app:backgroundTint="@color/button_operation_color"
                 android:text="@string/button_pow"
                 android:textSize="@dimen/button_text_size" />
 
@@ -38,7 +39,7 @@
                 android:id="@+id/button_plus"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_operation_color"
+                app:backgroundTint="@color/button_operation_color"
                 android:text="@string/button_plus"
                 android:textSize="@dimen/button_text_size" />
         </TableRow>
@@ -51,7 +52,7 @@
                 android:id="@+id/button_seven"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_number_color"
+                app:backgroundTint="@color/button_number_color"
                 android:text="@string/button_7"
                 android:textSize="@dimen/button_text_size" />
 
@@ -59,7 +60,7 @@
                 android:id="@+id/button_eight"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_number_color"
+                app:backgroundTint="@color/button_number_color"
                 android:text="@string/button_8"
                 android:textSize="@dimen/button_text_size" />
 
@@ -67,7 +68,7 @@
                 android:id="@+id/button_nine"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_number_color"
+                app:backgroundTint="@color/button_number_color"
                 android:text="@string/button_9"
                 android:textSize="@dimen/button_text_size" />
 
@@ -75,7 +76,7 @@
                 android:id="@+id/button_minus"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_operation_color"
+                app:backgroundTint="@color/button_operation_color"
                 android:text="@string/button_minus"
                 android:textSize="@dimen/button_text_size" />
         </TableRow>
@@ -88,7 +89,7 @@
                 android:id="@+id/button_four"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_number_color"
+                app:backgroundTint="@color/button_number_color"
                 android:text="@string/button_4"
                 android:textSize="@dimen/button_text_size" />
 
@@ -96,7 +97,7 @@
                 android:id="@+id/button_five"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_number_color"
+                app:backgroundTint="@color/button_number_color"
                 android:text="@string/button_5"
                 android:textSize="@dimen/button_text_size" />
 
@@ -104,7 +105,7 @@
                 android:id="@+id/button_six"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_number_color"
+                app:backgroundTint="@color/button_number_color"
                 android:text="@string/button_6"
                 android:textSize="@dimen/button_text_size" />
 
@@ -112,7 +113,7 @@
                 android:id="@+id/button_multiply"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_operation_color"
+                app:backgroundTint="@color/button_operation_color"
                 android:text="@string/button_mul"
                 android:textSize="@dimen/button_text_size" />
         </TableRow>
@@ -125,7 +126,7 @@
                 android:id="@+id/button_one"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_number_color"
+                app:backgroundTint="@color/button_number_color"
                 android:text="@string/button_1"
                 android:textSize="@dimen/button_text_size" />
 
@@ -133,7 +134,7 @@
                 android:id="@+id/button_two"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_number_color"
+                app:backgroundTint="@color/button_number_color"
                 android:text="@string/button_2"
                 android:textSize="@dimen/button_text_size" />
 
@@ -141,7 +142,7 @@
                 android:id="@+id/button_three"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_number_color"
+                app:backgroundTint="@color/button_number_color"
                 android:text="@string/button_3"
                 android:textSize="@dimen/button_text_size" />
 
@@ -149,7 +150,7 @@
                 android:id="@+id/button_divide"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_operation_color"
+                app:backgroundTint="@color/button_operation_color"
                 android:text="@string/button_div"
                 android:textSize="@dimen/button_text_size" />
         </TableRow>
@@ -162,7 +163,7 @@
                 android:id="@+id/button_dot"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_number_color"
+                app:backgroundTint="@color/button_number_color"
                 android:text="@string/button_dot"
                 android:textSize="@dimen/button_text_size" />
 
@@ -170,7 +171,7 @@
                 android:id="@+id/button_zero"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_number_color"
+                app:backgroundTint="@color/button_number_color"
                 android:text="@string/button_0"
                 android:textSize="@dimen/button_text_size" />
 
@@ -178,7 +179,7 @@
                 android:id="@+id/button_equals"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_number_color"
+                app:backgroundTint="@color/button_number_color"
                 android:text="@string/button_equals"
                 android:textSize="@dimen/button_text_size"
                 android:textColor="@android:color/white" />
@@ -187,7 +188,7 @@
                 android:id="@+id/button_mod"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                android:background="@color/button_operation_color"
+                app:backgroundTint="@color/button_operation_color"
                 android:text="@string/button_mod"
                 android:textSize="@dimen/button_text_size" />
         </TableRow>
