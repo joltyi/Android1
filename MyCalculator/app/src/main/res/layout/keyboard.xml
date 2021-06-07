@@ -24,7 +24,7 @@
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
                 app:backgroundTint="@color/button_operation_color"
-                android:text="@string/_root"
+                android:text="@string/_sqrt"
                 android:textSize="@dimen/button_text_size" />
 
             <Button

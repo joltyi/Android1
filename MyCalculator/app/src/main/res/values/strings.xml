@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Calculator</string>
     <string name="_clear">C</string>
-    <string name="_root"> √ </string>
+    <string name="_sqrt"> √ </string>
     <string name="_plus"> + </string>
     <string name="_7">7</string>
     <string name="_8">8</string>
@@ -20,5 +20,5 @@
     <string name="_equals"> = </string>
     <string name="_mod"> % </string>
     <string name="_pow"> ^ </string>
-    <string name="error">Error</string>
+    <string name="error">Error: </string>
 </resources>

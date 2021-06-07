@@ -8,15 +8,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    private static int MAX_CHARACTERS = 15;
+    private final static int MAX_OPERAND_LENGTH = 15;
 
     private TextView operandOneTextView;
     private TextView operandTwoTextView;
     private TextView operatorTextView;
-    private Double operandOne;
-    private Double operandTwo;
+    private TextView completeOperationTextView;
+    private TextView resultTextView;
     private Operator operator;
 
     @Override
@@ -24,14 +25,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toast.makeText(MainActivity.this, "Application has started", Toast.LENGTH_LONG).show();
-
         operandOneTextView = findViewById(R.id.input_value_1);
         operandTwoTextView = findViewById(R.id.input_value_2);
         operatorTextView = findViewById(R.id.input_operation);
+        completeOperationTextView = findViewById(R.id.complete_operation);
+        resultTextView = findViewById(R.id.result);
         operator = Operator.NULL;
         initButtons();
-
     }
 
     private void initButtons() {
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         handleOperatorButtonClick(R.id.button_mod);
         handleOperatorButtonClick(R.id.button_pow);
         handleOperatorButtonClick(R.id.button_root);
+        handleEqualButtonClick();
     }
 
     private void handleNumberButtonClick(int id) {
@@ -68,7 +69,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleOperatorButtonClick(int id) {
         Button button = findViewById(id);
-        button.setOnClickListener(it -> enterOperator(button.getText().toString().trim()));
+        button.setOnClickListener(it -> operatorClick(button.getText().toString().trim()));
+    }
+
+    private void handleEqualButtonClick() {
+        Button button = findViewById(R.id.button_equals);
+        button.setOnClickListener(it -> equalsClick());
     }
 
     private void selectTextViewToAppend(String number) {
@@ -80,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void appendNumber(TextView textView, String number) {
+        int maxLength = MAX_OPERAND_LENGTH;
         if (number.equals(".")) {
             if (textView.getText().toString().contains(".")) {
                 Toast.makeText(this, "Cannot have more than one decimal point in a number", Toast.LENGTH_LONG).show();
@@ -88,23 +95,22 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             if (textView.getText().toString().contains(".")) {
-                MAX_CHARACTERS++;
+                maxLength++;
             }
-            if (textView.getText().length() < MAX_CHARACTERS) {
+            if (textView.getText().length() < maxLength) {
                 textView.append(number);
             } else {
-                Toast.makeText(MainActivity.this, "Cannot have more than 10 numbers", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, String.format(Locale.getDefault(), "Cannot have more than %d numbers", MAX_OPERAND_LENGTH), Toast.LENGTH_LONG).show();
             }
         }
-        MAX_CHARACTERS = 10;
     }
 
     private void clearAll() {
         operandOneTextView.setText("");
         operandTwoTextView.setText("");
         operatorTextView.setText("");
-        operandOne = 0.0;
-        operandTwo = 0.0;
+        resultTextView.setText("");
+        completeOperationTextView.setText("");
         operator = Operator.NULL;
     }
 
@@ -115,13 +121,34 @@ public class MainActivity extends AppCompatActivity {
                 .orElse(Operator.NULL);
     }
 
-    private void enterOperator(String operatorString) {
+    private void operatorClick(String operatorString) {
         if (!operandOneTextView.getText().toString().equals("")) {
             operator = getOperatorFromString(operatorString);
+            if (operator.equals(Operator.SQRT)) {
+                operandTwoTextView.setText("2");
+            }
             operatorTextView.setText(operatorString);
         } else {
             Toast.makeText(this, "Enter first number before operation", Toast.LENGTH_LONG).show();
         }
     }
 
+    private void equalsClick() {
+        if (operandOneTextView.getText().toString().equals("")
+                || operatorTextView.getText().toString().equals("")
+                || operandTwoTextView.getText().toString().equals("")) {
+            Toast.makeText(this, "Enter both operands and the operation", Toast.LENGTH_LONG).show();
+        } else {
+            Calculator calculator = new Calculator(Double.parseDouble(operandOneTextView.getText().toString()),
+                    Double.parseDouble(operandTwoTextView.getText().toString()), operator);
+            try {
+                calculator.calculate();
+            } catch (CalculatorException e) {
+                Toast.makeText(this, getString(R.string.error) + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+
+            resultTextView.setText(calculator.getResultAsString());
+            completeOperationTextView.setText(calculator.getOperationAsString());
+        }
+    }
 }
