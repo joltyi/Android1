@@ -24,26 +24,24 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:gravity="end"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/keyboard_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/input_value_1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:baselineAligned="false"
             android:ellipsize="end"
-            android:maxLength="12"
+            android:maxLength="20"
             android:maxLines="1"
             android:textAlignment="textEnd"
             android:textSize="30sp"
-            android:textColor="@android:color/black"
-            app:layout_constraintBottom_toTopOf="@id/keyboard_layout"
-            app:layout_constraintEnd_toStartOf="@id/input_operation" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/input_operation"
@@ -58,27 +56,23 @@
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:textAlignment="center"
-            android:textSize="30sp"
-            android:textColor="@color/button_number_color"
-            app:layout_constraintBottom_toTopOf="@+id/keyboard_layout"
-            app:layout_constraintEnd_toStartOf="@+id/input_value_2" />
+            android:textSize="33sp"
+            android:textColor="@color/button_number_color" />
 
         <TextView
             android:id="@+id/input_value_2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="8dp"
             android:baselineAligned="false"
             android:ellipsize="end"
             android:gravity="end"
-            android:maxLength="12"
+            android:maxLength="20"
             android:maxLines="1"
             android:textAlignment="textEnd"
             android:textSize="30sp"
-            android:textColor="@android:color/black"
-            app:layout_constraintBottom_toTopOf="@+id/keyboard_layout"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
 
