@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MyCalculator.ButtonStyle">
+        <item name="android:layout_width">@dimen/button_size</item>
+        <item name="android:layout_height">@dimen/button_size</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+    </style>
+
+    <style name="Theme.MyCalculator.NumberButtonStyle" parent="Theme.MyCalculator.ButtonStyle">
+        <item name="backgroundTint">@color/button_number_color</item>
+    </style>
+
+    <style name="Theme.MyCalculator.OperationButtonStyle" parent="Theme.MyCalculator.ButtonStyle">
+        <item name="backgroundTint">@color/button_operation_color</item>
+    </style>
+
+    <style name="Theme.MyCalculator.OperationButtonStyle.WithPadding" parent="Theme.MyCalculator.OperationButtonStyle">
+        <item name="android:paddingStart">@dimen/operator_padding_start</item>
+        <item name="android:paddingEnd">@dimen/operator_padding_end</item>
+    </style>
+
+    <style name="Theme.MyCalculator.NumberButtonStyle.WithPadding" parent="Theme.MyCalculator.NumberButtonStyle">
+        <item name="android:paddingStart">@dimen/operator_padding_start</item>
+        <item name="android:paddingEnd">@dimen/operator_padding_end</item>
+    </style>
+
+</resources>
