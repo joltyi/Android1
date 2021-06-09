@@ -20,5 +20,5 @@
     <string name="_equals"> = </string>
     <string name="_mod"> % </string>
     <string name="_pow"> ^ </string>
-    <string name="error">Error: </string>
+    <string name="error">Error </string>
 </resources>

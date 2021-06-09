@@ -136,12 +136,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void clearAll() {
-        operandOneTextView.setText("");
-        operandTwoTextView.setText("");
-        operatorTextView.setText("");
+        clearOperands();
         resultTextView.setText("");
         completeOperationTextView.setText("");
         operator = Operator.NULL;
+    }
+
+    private void clearOperands() {
+        operandOneTextView.setText("");
+        operandTwoTextView.setText("");
+        operatorTextView.setText("");
     }
 
     private Operator getOperatorFromString(String operatorString) {
@@ -173,12 +177,13 @@ public class MainActivity extends AppCompatActivity {
                     Double.parseDouble(operandTwoTextView.getText().toString()), operator);
             try {
                 calculator.calculate();
+                resultTextView.setText(calculator.getResultAsString());
             } catch (CalculatorException e) {
+                resultTextView.setText(getString(R.string.error));
                 Toast.makeText(this, getString(R.string.error) + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
-
-            resultTextView.setText(calculator.getResultAsString());
             completeOperationTextView.setText(calculator.getOperationAsString());
+            clearOperands();
         }
     }
 }
