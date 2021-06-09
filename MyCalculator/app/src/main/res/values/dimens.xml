@@ -10,4 +10,6 @@
     <dimen name="input_text_size">30sp</dimen>
     <dimen name="operator_text_size">33sp</dimen>
     <dimen name="operator_padding">2dp</dimen>
+    <dimen name="operator_padding_start">25dp</dimen>
+    <dimen name="operator_padding_end">16dp</dimen>
 </resources>

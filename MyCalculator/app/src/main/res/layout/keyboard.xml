@@ -1,5 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_clear"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -19,7 +20,7 @@
                 app:backgroundTint="@color/button_operation_color"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_root"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -27,19 +28,23 @@
                 android:text="@string/_sqrt"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_pow"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
                 app:backgroundTint="@color/button_operation_color"
+                android:paddingStart="@dimen/operator_padding_start"
+                android:paddingEnd="@dimen/operator_padding_end"
                 android:text="@string/_pow"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_plus"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
                 app:backgroundTint="@color/button_operation_color"
+                android:paddingStart="@dimen/operator_padding_start"
+                android:paddingEnd="@dimen/operator_padding_end"
                 android:text="@string/_plus"
                 android:textSize="@dimen/button_text_size" />
         </TableRow>
@@ -48,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_seven"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -56,7 +61,7 @@
                 android:text="@string/_7"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_eight"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -64,7 +69,7 @@
                 android:text="@string/_8"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_nine"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -72,11 +77,13 @@
                 android:text="@string/_9"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_minus"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
                 app:backgroundTint="@color/button_operation_color"
+                android:paddingStart="@dimen/operator_padding_start"
+                android:paddingEnd="@dimen/operator_padding_end"
                 android:text="@string/_minus"
                 android:textSize="@dimen/button_text_size" />
         </TableRow>
@@ -85,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_four"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -93,7 +100,7 @@
                 android:text="@string/_4"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_five"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -101,7 +108,7 @@
                 android:text="@string/_5"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_six"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -109,20 +116,22 @@
                 android:text="@string/_6"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_multiply"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
-                app:backgroundTint="@color/button_operation_color"
+                android:paddingStart="@dimen/operator_padding_start"
+                android:paddingEnd="@dimen/operator_padding_end"
                 android:text="@string/_mul"
-                android:textSize="@dimen/button_text_size" />
+                android:textSize="@dimen/button_text_size"
+                app:backgroundTint="@color/button_operation_color" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_one"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -130,7 +139,7 @@
                 android:text="@string/_1"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_two"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -138,7 +147,7 @@
                 android:text="@string/_2"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_three"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -146,10 +155,12 @@
                 android:text="@string/_3"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_divide"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
+                android:paddingStart="@dimen/operator_padding_start"
+                android:paddingEnd="@dimen/operator_padding_end"
                 app:backgroundTint="@color/button_operation_color"
                 android:text="@string/_div"
                 android:textSize="@dimen/button_text_size" />
@@ -159,7 +170,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_dot"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -167,7 +178,7 @@
                 android:text="@string/_dot"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_zero"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -175,7 +186,7 @@
                 android:text="@string/_0"
                 android:textSize="@dimen/button_text_size" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_equals"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
@@ -184,10 +195,12 @@
                 android:textSize="@dimen/button_text_size"
                 android:textColor="@android:color/white" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_mod"
                 android:layout_width="@dimen/button_size"
                 android:layout_height="@dimen/button_size"
+                android:paddingStart="@dimen/operator_padding_start"
+                android:paddingEnd="@dimen/operator_padding_end"
                 app:backgroundTint="@color/button_operation_color"
                 android:text="@string/_mod"
                 android:textSize="@dimen/button_text_size" />
