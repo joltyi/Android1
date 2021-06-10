@@ -15,22 +15,22 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_clear"
                 android:text="@string/_clear"
-                style="@style/Theme.MyCalculator.OperationButtonStyle" />
+                style="@style/Theme.MyCalculator.ButtonStyle.OperationButtonStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_root"
                 android:text="@string/_sqrt"
-                style="@style/Theme.MyCalculator.OperationButtonStyle" />
+                style="@style/Theme.MyCalculator.ButtonStyle.OperationButtonStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_pow"
                 android:text="@string/_pow"
-                style="@style/Theme.MyCalculator.OperationButtonStyle.WithPadding" />
+                style="@style/Theme.MyCalculator.ButtonStyle.OperationButtonStyle.WithPadding" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_plus"
                 android:text="@string/_plus"
-                style="@style/Theme.MyCalculator.OperationButtonStyle.WithPadding" />
+                style="@style/Theme.MyCalculator.ButtonStyle.OperationButtonStyle.WithPadding" />
         </TableRow>
 
         <TableRow
@@ -40,22 +40,22 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_seven"
                 android:text="@string/_7"
-                style="@style/Theme.MyCalculator.NumberButtonStyle" />
+                style="@style/Theme.MyCalculator.ButtonStyle.NumberButtonStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_eight"
                 android:text="@string/_8"
-                style="@style/Theme.MyCalculator.NumberButtonStyle" />
+                style="@style/Theme.MyCalculator.ButtonStyle.NumberButtonStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_nine"
                 android:text="@string/_9"
-                style="@style/Theme.MyCalculator.NumberButtonStyle" />
+                style="@style/Theme.MyCalculator.ButtonStyle.NumberButtonStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_minus"
                 android:text="@string/_minus"
-                style="@style/Theme.MyCalculator.OperationButtonStyle.WithPadding" />
+                style="@style/Theme.MyCalculator.ButtonStyle.OperationButtonStyle.WithPadding" />
         </TableRow>
 
         <TableRow
@@ -65,22 +65,22 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_four"
                 android:text="@string/_4"
-                style="@style/Theme.MyCalculator.NumberButtonStyle" />
+                style="@style/Theme.MyCalculator.ButtonStyle.NumberButtonStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_five"
                 android:text="@string/_5"
-                style="@style/Theme.MyCalculator.NumberButtonStyle" />
+                style="@style/Theme.MyCalculator.ButtonStyle.NumberButtonStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_six"
                 android:text="@string/_6"
-                style="@style/Theme.MyCalculator.NumberButtonStyle" />
+                style="@style/Theme.MyCalculator.ButtonStyle.NumberButtonStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_multiply"
                 android:text="@string/_mul"
-                style="@style/Theme.MyCalculator.OperationButtonStyle.WithPadding" />
+                style="@style/Theme.MyCalculator.ButtonStyle.OperationButtonStyle.WithPadding" />
         </TableRow>
 
         <TableRow
@@ -90,22 +90,22 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_one"
                 android:text="@string/_1"
-                style="@style/Theme.MyCalculator.NumberButtonStyle" />
+                style="@style/Theme.MyCalculator.ButtonStyle.NumberButtonStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_two"
                 android:text="@string/_2"
-                style="@style/Theme.MyCalculator.NumberButtonStyle" />
+                style="@style/Theme.MyCalculator.ButtonStyle.NumberButtonStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_three"
                 android:text="@string/_3"
-                style="@style/Theme.MyCalculator.NumberButtonStyle" />
+                style="@style/Theme.MyCalculator.ButtonStyle.NumberButtonStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_divide"
                 android:text="@string/_div"
-                style="@style/Theme.MyCalculator.OperationButtonStyle.WithPadding" />
+                style="@style/Theme.MyCalculator.ButtonStyle.OperationButtonStyle.WithPadding" />
         </TableRow>
 
         <TableRow
@@ -115,22 +115,22 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_dot"
                 android:text="@string/_dot"
-                style="@style/Theme.MyCalculator.NumberButtonStyle.WithPadding" />
+                style="@style/Theme.MyCalculator.ButtonStyle.NumberButtonStyle.WithPadding" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_zero"
                 android:text="@string/_0"
-                style="@style/Theme.MyCalculator.NumberButtonStyle" />
+                style="@style/Theme.MyCalculator.ButtonStyle.NumberButtonStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_equals"
                 android:text="@string/_equals"
-                style="@style/Theme.MyCalculator.NumberButtonStyle.WithPadding" />
+                style="@style/Theme.MyCalculator.ButtonStyle.NumberButtonStyle.WithPadding" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_mod"
                 android:text="@string/_mod"
-                style="@style/Theme.MyCalculator.OperationButtonStyle.WithPadding" />
+                style="@style/Theme.MyCalculator.ButtonStyle.OperationButtonStyle.WithPadding" />
         </TableRow>
     </TableLayout>
 

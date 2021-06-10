@@ -17,69 +17,24 @@
 
     <LinearLayout
         android:id="@+id/input_data_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/linear_layout_margin"
-        android:layout_marginEnd="@dimen/linear_layout_margin"
-        android:gravity="end"
-        android:orientation="vertical"
+        style="@style/Theme.MyCalculator.LinearLayoutStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/keyboard_layout"
         app:layout_constraintStart_toStartOf="parent">
-
         <TextView
             android:id="@+id/input_value_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/text_view_margin"
-            android:baselineAligned="false"
-            android:ellipsize="end"
-            android:maxLength="20"
-            android:maxLines="1"
-            android:textAlignment="textEnd"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/input_text_size" />
-
+            style="@style/Theme.MyCalculator.InputTextViewStyle"/>
         <TextView
             android:id="@+id/input_operation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/text_view_margin"
-            android:baselineAligned="false"
-            android:ellipsize="end"
-            android:maxLength="1"
-            android:maxLines="1"
-            android:paddingLeft="@dimen/operator_padding"
-            android:paddingRight="@dimen/operator_padding"
-            android:textAlignment="center"
-            android:textColor="@color/button_number_color"
-            android:textSize="@dimen/operator_text_size" />
-
+            style="@style/Theme.MyCalculator.InputTextViewStyle.OperationTextViewStyle" />
         <TextView
             android:id="@+id/input_value_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/text_view_margin"
-            android:baselineAligned="false"
-            android:ellipsize="end"
-            android:gravity="end"
-            android:maxLength="20"
-            android:maxLines="1"
-            android:textAlignment="textEnd"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/input_text_size" />
-
+            style="@style/Theme.MyCalculator.InputTextViewStyle" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/complete_operation_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/linear_layout_margin"
-        android:layout_weight="1"
-        android:layout_marginEnd="8dp"
-        android:gravity="end"
-        android:orientation="vertical"
+        style="@style/Theme.MyCalculator.LinearLayoutStyle"
         app:layout_constraintBottom_toTopOf="@+id/input_data_layout"
         app:layout_constraintEnd_toStartOf="@+id/keyboard_layout"
         app:layout_constraintStart_toStartOf="parent"
@@ -97,11 +52,7 @@
 
     <LinearLayout
         android:id="@+id/result_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/linear_layout_margin"
-        android:layout_marginEnd="@dimen/linear_layout_margin"
-        android:orientation="vertical"
+        style="@style/Theme.MyCalculator.LinearLayoutStyle"
         app:layout_constraintBottom_toTopOf="@id/input_data_layout"
         app:layout_constraintEnd_toStartOf="@id/keyboard_layout"
         app:layout_constraintHorizontal_bias="0.0"
