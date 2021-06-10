@@ -1,25 +1,24 @@
 <resources>
     <string name="app_name">Calculator</string>
-    <string name="button_clear">C</string>
-    <string name="button_root"> √ </string>
-    <string name="button_plus"> + </string>
-    <string name="button_7">7</string>
-    <string name="button_8">8</string>
-    <string name="button_9">9</string>
-    <string name="button_minus"> - </string>
-    <string name="button_4">4</string>
-    <string name="button_5">5</string>
-    <string name="button_6">6</string>
-    <string name="button_mul"> x </string>
-    <string name="button_1">1</string>
-    <string name="button_2">2</string>
-    <string name="button_3">3</string>
-    <string name="button_div"> / </string>
-    <string name="button_dot"> . </string>
-    <string name="button_0">0</string>
-    <string name="button_equals"> = </string>
-    <string name="button_mod"> % </string>
-    <string name="button_pow"> ^ </string>
-    <string name="error">Error</string>
-    <string name="backspace">Backspace</string>
+    <string name="_clear">C</string>
+    <string name="_sqrt"> √ </string>
+    <string name="_plus"> + </string>
+    <string name="_7">7</string>
+    <string name="_8">8</string>
+    <string name="_9">9</string>
+    <string name="_minus"> - </string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="_mul"> x </string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_div"> / </string>
+    <string name="_dot"> . </string>
+    <string name="_0">0</string>
+    <string name="_equals"> = </string>
+    <string name="_mod"> % </string>
+    <string name="_pow"> ^ </string>
+    <string name="error">Error </string>
 </resources>

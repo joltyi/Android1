@@ -2,29 +2,29 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="horizontal">
 
     <include
-        layout="@layout/keyboard"
         android:id="@+id/keyboard_layout"
-        android:layout_width="0dp"
+        layout="@layout/keyboard"
+        android:layout_width="370dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
+        android:id="@+id/input_data_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/linear_layout_margin"
         android:layout_marginStart="@dimen/linear_layout_margin"
+        android:layout_marginEnd="@dimen/linear_layout_margin"
         android:gravity="end"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@id/keyboard_layout"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/keyboard_layout"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
@@ -37,8 +37,8 @@
             android:maxLength="20"
             android:maxLines="1"
             android:textAlignment="textEnd"
-            android:textSize="@dimen/input_text_size"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/input_text_size" />
 
         <TextView
             android:id="@+id/input_operation"
@@ -47,13 +47,13 @@
             android:layout_marginBottom="@dimen/text_view_margin"
             android:baselineAligned="false"
             android:ellipsize="end"
-            android:maxLines="1"
             android:maxLength="1"
+            android:maxLines="1"
             android:paddingLeft="@dimen/operator_padding"
             android:paddingRight="@dimen/operator_padding"
             android:textAlignment="center"
-            android:textSize="@dimen/operator_text_size"
-            android:textColor="@color/button_number_color" />
+            android:textColor="@color/button_number_color"
+            android:textSize="@dimen/operator_text_size" />
 
         <TextView
             android:id="@+id/input_value_2"
@@ -66,8 +66,8 @@
             android:maxLength="20"
             android:maxLines="1"
             android:textAlignment="textEnd"
-            android:textSize="@dimen/input_text_size"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/input_text_size" />
 
     </LinearLayout>
 
@@ -75,13 +75,36 @@
         android:id="@+id/complete_operation_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/linear_layout_margin"
         android:layout_marginStart="@dimen/linear_layout_margin"
-        android:layout_marginTop="@dimen/linear_layout_margin"
         android:layout_weight="1"
+        android:layout_marginEnd="8dp"
         android:gravity="end"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/input_data_layout"
+        app:layout_constraintEnd_toStartOf="@+id/keyboard_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/result_layout">
+
+        <TextView
+            android:id="@+id/complete_operation"
+            android:layout_width="343dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textSize="@dimen/complete_operation_text_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/result_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/linear_layout_margin"
+        android:layout_marginEnd="@dimen/linear_layout_margin"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/input_data_layout"
+        app:layout_constraintEnd_toStartOf="@id/keyboard_layout"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -90,33 +113,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textAlignment="viewEnd"
-            android:textSize="@dimen/result_text_size"
             android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="@dimen/result_text_size"/>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/linear_layout_margin"
-        android:layout_marginStart="@dimen/linear_layout_margin"
-        android:layout_marginTop="@dimen/linear_layout_margin"
-        android:gravity="end"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/complete_operation_layout">
-
-        <TextView
-            android:id="@+id/complete_operation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:maxLines="1"
-            android:textSize="@dimen/complete_operation_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/result" />
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

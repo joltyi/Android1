@@ -3,4 +3,11 @@
     <dimen name="button_size">64dp</dimen>
     <dimen name="button_text_size">28sp</dimen>
     <dimen name="border_width">0.5dp</dimen>
+    <dimen name="linear_layout_margin">8dp</dimen>
+    <dimen name="text_view_margin">8dp</dimen>
+    <dimen name="complete_operation_text_size">20sp</dimen>
+    <dimen name="result_text_size">50sp</dimen>
+    <dimen name="input_text_size">30sp</dimen>
+    <dimen name="operator_text_size">33sp</dimen>
+    <dimen name="operator_padding">2dp</dimen>
 </resources>
