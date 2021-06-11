@@ -2,8 +2,12 @@ package com.example.mycalculator;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,11 +32,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView resultTextView;
     private Operator operator;
 
+    SwitchCompat sw;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        setContentView(R.layout.activity_main);
         operandOneTextView = findViewById(R.id.input_value_1);
         operandTwoTextView = findViewById(R.id.input_value_2);
         operatorTextView = findViewById(R.id.input_operation);
@@ -40,28 +46,43 @@ public class MainActivity extends AppCompatActivity {
         resultTextView = findViewById(R.id.result);
         operator = Operator.NULL;
         initButtons();
+
+        sw = findViewById(R.id.change_theme);
+        initSwitchTheme();
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(KEY_OPERAND1, operandOneTextView.getText().toString());
-        outState.putString(KEY_OPERAND2, operandTwoTextView.getText().toString());
-        outState.putString(KEY_OPERATOR, operatorTextView.getText().toString());
-        outState.putString(KEY_RESULT, resultTextView.getText().toString());
-        outState.putString(KEY_COMPLETE_OPERATION, completeOperationTextView.getText().toString());
-        outState.putString(KEY_OPERATOR_VALUE, operator.getOperatorString());
+        CalculatorState calculatorState = new CalculatorState(operandOneTextView.getText().toString(),
+                operandTwoTextView.getText().toString(),
+                operatorTextView.getText().toString(),
+                resultTextView.getText().toString(),
+                completeOperationTextView.getText().toString(),
+                operator,
+                sw.getText().toString(),
+                sw.isChecked());
+        outState.putParcelable("CALCULATOR_STATE", calculatorState);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        operandOneTextView.setText(savedInstanceState.getString(KEY_OPERAND1, ""));
-        operandTwoTextView.setText(savedInstanceState.getString(KEY_OPERAND2, ""));
-        operatorTextView.setText(savedInstanceState.getString(KEY_OPERATOR, ""));
-        resultTextView.setText(savedInstanceState.getString(KEY_RESULT, ""));
-        completeOperationTextView.setText(savedInstanceState.getString(KEY_COMPLETE_OPERATION, ""));
-        operator = getOperatorFromString(savedInstanceState.getString(KEY_OPERATOR_VALUE, ""));
+        CalculatorState calculatorState = savedInstanceState.getParcelable("CALCULATOR_STATE");
+        operandOneTextView.setText(calculatorState.getOperand1());
+        operandTwoTextView.setText(calculatorState.getOperand2());
+        operatorTextView.setText(calculatorState.getOperatorText());
+        resultTextView.setText(calculatorState.getResultText());
+        completeOperationTextView.setText(calculatorState.getCompleteOperation());
+        operator = calculatorState.getOperator();
+        sw.setChecked(calculatorState.getSwChecked());
+        sw.setText(calculatorState.getSwText());
+    }
+
+    private void initSwitchTheme() {
+        sw.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            recreate();
+        });
     }
 
     private void initButtons() {
@@ -150,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Operator getOperatorFromString(String operatorString) {
         return Arrays.stream(Operator.values())
-                .filter(it -> getString(it.getOperatorResource()).trim().equals(operatorString))
+                .filter(it -> it.getOperatorString().equals(operatorString))
                 .findFirst()
                 .orElse(Operator.NULL);
     }

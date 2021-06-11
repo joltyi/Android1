@@ -35,13 +35,23 @@
             style="@style/Theme.MyCalculator.InputTextViewStyle" />
     </LinearLayout>
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/change_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="viewStart"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:text="switch theme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <LinearLayout
         android:id="@+id/complete_operation_layout"
         style="@style/Theme.MyCalculator.LinearLayoutStyle"
         android:layout_weight="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/change_theme">
 
         <TextView
             android:id="@+id/result"
