@@ -7,11 +7,11 @@
     </style>
 
     <style name="Theme.MyCalculator.ButtonStyle.NumberButtonStyle" parent="Theme.MyCalculator.ButtonStyle">
-        <item name="backgroundTint">@color/button_number_color</item>
+        <item name="backgroundTint">?colorPrimary</item>
     </style>
 
     <style name="Theme.MyCalculator.ButtonStyle.OperationButtonStyle" parent="Theme.MyCalculator.ButtonStyle">
-        <item name="backgroundTint">@color/button_operation_color</item>
+        <item name="backgroundTint">?colorPrimaryVariant</item>
     </style>
 
     <style name="Theme.MyCalculator.ButtonStyle.OperationButtonStyle.WithPadding" parent="Theme.MyCalculator.ButtonStyle.OperationButtonStyle">

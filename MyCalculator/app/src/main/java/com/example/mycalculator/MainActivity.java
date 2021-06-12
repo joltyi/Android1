@@ -4,10 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,15 +13,10 @@ import android.widget.Toast;
 import java.util.Arrays;
 import java.util.Locale;
 
-import static com.example.mycalculator.Constants.KEY_COMPLETE_OPERATION;
-import static com.example.mycalculator.Constants.KEY_OPERAND1;
-import static com.example.mycalculator.Constants.KEY_OPERAND2;
-import static com.example.mycalculator.Constants.KEY_OPERATOR;
-import static com.example.mycalculator.Constants.KEY_OPERATOR_VALUE;
-import static com.example.mycalculator.Constants.KEY_RESULT;
-
 public class MainActivity extends AppCompatActivity {
     private final static int MAX_OPERAND_LENGTH = 15;
+
+    SharedPreferences preferences;
 
     private TextView operandOneTextView;
     private TextView operandTwoTextView;
@@ -32,11 +25,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView resultTextView;
     private Operator operator;
 
-    SwitchCompat sw;
+    private SwitchCompat sw;
+    private boolean activityRecreating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        preferences = getPreferences(MODE_PRIVATE);
+        setTheme(preferences.getBoolean("USE_DARK_THEME",false) ? R.style.AppThemeDark : R.style.AppThemeLight);
 
         setContentView(R.layout.activity_main);
         operandOneTextView = findViewById(R.id.input_value_1);
@@ -48,7 +45,10 @@ public class MainActivity extends AppCompatActivity {
         initButtons();
 
         sw = findViewById(R.id.change_theme);
+        activityRecreating = preferences.getBoolean("ACTIVITY_RECREATING", false);
         initSwitchTheme();
+
+
     }
 
     @Override
@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
                 sw.getText().toString(),
                 sw.isChecked());
         outState.putParcelable("CALCULATOR_STATE", calculatorState);
+        SharedPreferences.Editor preferencesEditor = preferences.edit();
+        preferencesEditor.putBoolean("ACTIVITY_RECREATING", true);
+        preferencesEditor.apply();
     }
 
     @Override
@@ -77,11 +80,28 @@ public class MainActivity extends AppCompatActivity {
         operator = calculatorState.getOperator();
         sw.setChecked(calculatorState.getSwChecked());
         sw.setText(calculatorState.getSwText());
+        SharedPreferences.Editor preferencesEditor = preferences.edit();
+        activityRecreating = false;
+        preferencesEditor.putBoolean("ACTIVITY_RECREATING", false);
+        preferencesEditor.apply();
     }
 
     private void initSwitchTheme() {
         sw.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            recreate();
+            SharedPreferences.Editor preferencesEditor = preferences.edit();
+            preferencesEditor.putBoolean("USE_DARK_THEME", !preferences.getBoolean("USE_DARK_THEME",false));
+            if (isChecked) {
+                sw.setText("Dark Theme");
+                preferencesEditor.putBoolean("USE_DARK_THEME", true);
+            } else {
+                sw.setText("Light Theme");
+                preferencesEditor.putBoolean("USE_DARK_THEME", false);
+            }
+            preferencesEditor.apply();
+            if (!activityRecreating) {
+                recreate();
+            }
+
         });
     }
 
