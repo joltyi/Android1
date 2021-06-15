@@ -10,18 +10,18 @@ public class CalculatorState implements Parcelable {
     private final String resultText;
     private final String completeOperation;
     private final Operator operator;
-    private final String swText;
-    private final Boolean swChecked;
+//    private final String swText;
+//    private final Boolean swChecked;
 
-    public CalculatorState(String operand1, String operand2, String operatorText, String resultText, String completeOperation, Operator operator, String swText, Boolean swChecked) {
+    public CalculatorState(String operand1, String operand2, String operatorText, String resultText, String completeOperation, Operator operator) {
         this.operand1 = operand1;
         this.operand2 = operand2;
         this.operatorText = operatorText;
         this.resultText = resultText;
         this.completeOperation = completeOperation;
         this.operator = operator;
-        this.swText = swText;
-        this.swChecked = swChecked;
+//        this.swText = swText;
+//        this.swChecked = swChecked;
     }
 
     public String getOperand1() {
@@ -48,13 +48,13 @@ public class CalculatorState implements Parcelable {
         return operator;
     }
 
-    public String getSwText() {
-        return swText;
-    }
-
-    public Boolean getSwChecked() {
-        return swChecked;
-    }
+//    public String getSwText() {
+//        return swText;
+//    }
+//
+//    public Boolean getSwChecked() {
+//        return swChecked;
+//    }
 
     protected CalculatorState(Parcel in) {
         operand1 = in.readString();
@@ -62,10 +62,10 @@ public class CalculatorState implements Parcelable {
         operatorText = in.readString();
         resultText = in.readString();
         completeOperation = in.readString();
-        swText = in.readString();
+//        swText = in.readString();
         operator = Operator.valueOf(in.readString());
         byte tmpSwChecked = in.readByte();
-        swChecked = tmpSwChecked == 0 ? null : tmpSwChecked == 1;
+//        swChecked = tmpSwChecked == 0 ? null : tmpSwChecked == 1;
     }
 
     public static final Creator<CalculatorState> CREATOR = new Creator<CalculatorState>() {
@@ -93,7 +93,7 @@ public class CalculatorState implements Parcelable {
         dest.writeString(resultText);
         dest.writeString(completeOperation);
         dest.writeString(operator.name());
-        dest.writeString(swText);
-        dest.writeByte((byte) (swChecked == null ? 0 : swChecked ? 1 : 2));
+//        dest.writeString(swText);
+//        dest.writeByte((byte) (swChecked == null ? 0 : swChecked ? 1 : 2));
     }
 }

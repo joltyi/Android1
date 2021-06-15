@@ -21,4 +21,5 @@
     <string name="_mod"> % </string>
     <string name="_pow"> ^ </string>
     <string name="error">Error </string>
+    <string name="action_settings">Settings</string>
 </resources>
