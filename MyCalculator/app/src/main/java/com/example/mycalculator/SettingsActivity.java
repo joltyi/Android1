@@ -6,11 +6,10 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import static com.example.mycalculator.Constants.KEY_DARK_THEME;
+import static com.example.mycalculator.Constants.KEY_NIGHT_THEME;
 import static com.example.mycalculator.Constants.MY_SHARED_PREFERENCES;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -22,23 +21,39 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferences = getSharedPreferences(MY_SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        setTheme(preferences.getBoolean(KEY_DARK_THEME,false) ? R.style.AppThemeDark : R.style.AppThemeLight);
+
         setContentView(R.layout.activity_settings);
         switchTheme = findViewById(R.id.change_theme);
 
         checkNightModeActivated();
 
-        initSwitchTheme();
+        switchTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                saveNightModeState(true);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                saveNightModeState(false);
+            }
+            recreate();
+        });
     }
 
     public void checkNightModeActivated() {
-        if (preferences.getBoolean(KEY_DARK_THEME,false)) {
+        if (preferences.getBoolean(KEY_NIGHT_THEME, false)) {
             switchTheme.setChecked(true);
-            switchTheme.setText("Dark Theme");
+            switchTheme.setText("Night Theme");
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             switchTheme.setChecked(false);
             switchTheme.setText("Light Theme");
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+    }
+
+    private void saveNightModeState(boolean nightMode) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(KEY_NIGHT_THEME, nightMode).apply();
     }
 
     private void initSwitchTheme() {
@@ -60,13 +75,13 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(KEY_DARK_THEME, switchTheme.isChecked());
+        outState.putBoolean(KEY_NIGHT_THEME, switchTheme.isChecked());
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        switchTheme.setChecked(savedInstanceState.getBoolean(KEY_DARK_THEME));
+        switchTheme.setChecked(savedInstanceState.getBoolean(KEY_NIGHT_THEME));
     }
 //
 //    @Override

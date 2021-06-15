@@ -15,16 +15,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/change_theme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAlignment="viewStart"
-        style="@style/TextAppearance.AppCompat.Small"
-        android:text="switch theme"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <LinearLayout
         android:id="@+id/input_data_layout"
         style="@style/Theme.MyCalculator.LinearLayoutStyle"
@@ -56,6 +46,7 @@
             android:layout_height="wrap_content"
             android:gravity="end"
             android:maxLines="1"
+            android:textColor="?colorPrimaryVariant"
             android:textSize="@dimen/complete_operation_text_size" />
 
     </LinearLayout>
@@ -74,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textAlignment="viewEnd"
-            android:textColor="@android:color/black"
+            android:textColor="?colorPrimary"
             android:textSize="@dimen/result_text_size"/>
 
     </LinearLayout>
