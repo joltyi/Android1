@@ -42,11 +42,11 @@ public class SettingsActivity extends AppCompatActivity {
     public void checkNightModeActivated() {
         if (preferences.getBoolean(KEY_NIGHT_THEME, false)) {
             switchTheme.setChecked(true);
-            switchTheme.setText("Night Theme");
+            switchTheme.setText(R.string.night_theme_text);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             switchTheme.setChecked(false);
-            switchTheme.setText("Light Theme");
+            switchTheme.setText(R.string.light_theme_text);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
@@ -54,22 +54,6 @@ public class SettingsActivity extends AppCompatActivity {
     private void saveNightModeState(boolean nightMode) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(KEY_NIGHT_THEME, nightMode).apply();
-    }
-
-    private void initSwitchTheme() {
-        switchTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SharedPreferences.Editor preferencesEditor = preferences.edit();
-            preferencesEditor.putBoolean("USE_DARK_THEME", !preferences.getBoolean("USE_DARK_THEME", false));
-            if (isChecked) {
-                switchTheme.setText("Dark Theme");
-                preferencesEditor.putBoolean("USE_DARK_THEME", true);
-            } else {
-                switchTheme.setText("Light Theme");
-                preferencesEditor.putBoolean("USE_DARK_THEME", false);
-            }
-            preferencesEditor.apply();
-            recreate();
-        });
     }
 
     @Override
@@ -83,12 +67,5 @@ public class SettingsActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         switchTheme.setChecked(savedInstanceState.getBoolean(KEY_NIGHT_THEME));
     }
-//
-//    @Override
-//    public void onBackPressed() {
-//        Intent intent = new Intent();
-//        intent.putExtra(Constants.KEY_DARK_THEME, preferences.getBoolean(KEY_DARK_THEME, false));
-//        setResult(RESULT_OK, intent);
-//        finish();
-//    }
+
 }

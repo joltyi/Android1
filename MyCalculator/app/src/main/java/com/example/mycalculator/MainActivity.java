@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.Arrays;
 import java.util.Locale;
 
+import static com.example.mycalculator.Constants.KEY_CALCULATOR_STATE;
 import static com.example.mycalculator.Constants.KEY_NIGHT_THEME;
 import static com.example.mycalculator.Constants.MAX_OPERAND_LENGTH;
 import static com.example.mycalculator.Constants.MY_SHARED_PREFERENCES;
@@ -95,16 +96,15 @@ public class MainActivity extends AppCompatActivity {
                 resultTextView.getText().toString(),
                 completeOperationTextView.getText().toString(),
                 operator);
-        outState.putParcelable("CALCULATOR_STATE", calculatorState);
+        outState.putParcelable(KEY_CALCULATOR_STATE, calculatorState);
         SharedPreferences.Editor preferencesEditor = preferences.edit();
-        preferencesEditor.putBoolean("ACTIVITY_RECREATING", true);
         preferencesEditor.apply();
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        CalculatorState calculatorState = savedInstanceState.getParcelable("CALCULATOR_STATE");
+        CalculatorState calculatorState = savedInstanceState.getParcelable(KEY_CALCULATOR_STATE);
         operandOneTextView.setText(calculatorState.getOperand1());
         operandTwoTextView.setText(calculatorState.getOperand2());
         operatorTextView.setText(calculatorState.getOperatorText());
@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
         completeOperationTextView.setText(calculatorState.getCompleteOperation());
         operator = calculatorState.getOperator();
         SharedPreferences.Editor preferencesEditor = preferences.edit();
-        preferencesEditor.putBoolean("ACTIVITY_RECREATING", false);
         preferencesEditor.apply();
     }
 
