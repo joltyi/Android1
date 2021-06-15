@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.MyCalculator.ButtonStyle">
+        <item name="android:layout_width">@dimen/button_size</item>
+        <item name="android:layout_height">@dimen/button_size</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+    </style>
+
+    <style name="Theme.MyCalculator.ButtonStyle.NumberButtonStyle" parent="Theme.MyCalculator.ButtonStyle">
+        <item name="backgroundTint">?colorPrimary</item>
+    </style>
+
+    <style name="Theme.MyCalculator.ButtonStyle.OperationButtonStyle" parent="Theme.MyCalculator.ButtonStyle">
+        <item name="backgroundTint">?colorPrimaryVariant</item>
+    </style>
+
+    <style name="Theme.MyCalculator.ButtonStyle.OperationButtonStyle.WithPadding" parent="Theme.MyCalculator.ButtonStyle.OperationButtonStyle">
+        <item name="android:paddingStart">@dimen/operator_padding_start</item>
+        <item name="android:paddingEnd">@dimen/operator_padding_end</item>
+    </style>
+
+    <style name="Theme.MyCalculator.ButtonStyle.NumberButtonStyle.WithPadding" parent="Theme.MyCalculator.ButtonStyle.NumberButtonStyle">
+        <item name="android:paddingStart">@dimen/operator_padding_start</item>
+        <item name="android:paddingEnd">@dimen/operator_padding_end</item>
+    </style>
+
+    <style name="Theme.MyCalculator.InputTextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/text_view_margin</item>
+        <item name="android:baselineAligned">false</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLength">20</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:textSize">@dimen/input_text_size</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="Theme.MyCalculator.InputTextViewStyle.OperationTextViewStyle" parent="Theme.MyCalculator.InputTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:textSize">@dimen/operator_text_size</item>
+        <item name="android:textColor">@color/button_number_color</item>
+    </style>
+
+    <style name="Theme.MyCalculator.LinearLayoutStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">@dimen/linear_layout_margin</item>
+        <item name="android:layout_marginStart">@dimen/linear_layout_margin</item>
+        <item name="android:layout_marginTop">@dimen/linear_layout_margin</item>
+        <item name="android:gravity">end</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+</resources>

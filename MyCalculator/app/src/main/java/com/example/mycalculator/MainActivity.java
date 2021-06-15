@@ -2,7 +2,9 @@ package com.example.mycalculator;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,15 +13,10 @@ import android.widget.Toast;
 import java.util.Arrays;
 import java.util.Locale;
 
-import static com.example.mycalculator.Constants.KEY_COMPLETE_OPERATION;
-import static com.example.mycalculator.Constants.KEY_OPERAND1;
-import static com.example.mycalculator.Constants.KEY_OPERAND2;
-import static com.example.mycalculator.Constants.KEY_OPERATOR;
-import static com.example.mycalculator.Constants.KEY_OPERATOR_VALUE;
-import static com.example.mycalculator.Constants.KEY_RESULT;
-
 public class MainActivity extends AppCompatActivity {
     private final static int MAX_OPERAND_LENGTH = 15;
+
+    SharedPreferences preferences;
 
     private TextView operandOneTextView;
     private TextView operandTwoTextView;
@@ -28,11 +25,17 @@ public class MainActivity extends AppCompatActivity {
     private TextView resultTextView;
     private Operator operator;
 
+    private SwitchCompat sw;
+    private boolean activityRecreating;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        preferences = getPreferences(MODE_PRIVATE);
+        setTheme(preferences.getBoolean("USE_DARK_THEME",false) ? R.style.AppThemeDark : R.style.AppThemeLight);
+
+        setContentView(R.layout.activity_main);
         operandOneTextView = findViewById(R.id.input_value_1);
         operandTwoTextView = findViewById(R.id.input_value_2);
         operatorTextView = findViewById(R.id.input_operation);
@@ -40,28 +43,66 @@ public class MainActivity extends AppCompatActivity {
         resultTextView = findViewById(R.id.result);
         operator = Operator.NULL;
         initButtons();
+
+        sw = findViewById(R.id.change_theme);
+        activityRecreating = preferences.getBoolean("ACTIVITY_RECREATING", false);
+        initSwitchTheme();
+
+
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(KEY_OPERAND1, operandOneTextView.getText().toString());
-        outState.putString(KEY_OPERAND2, operandTwoTextView.getText().toString());
-        outState.putString(KEY_OPERATOR, operatorTextView.getText().toString());
-        outState.putString(KEY_RESULT, resultTextView.getText().toString());
-        outState.putString(KEY_COMPLETE_OPERATION, completeOperationTextView.getText().toString());
-        outState.putString(KEY_OPERATOR_VALUE, operator.getOperatorString());
+        CalculatorState calculatorState = new CalculatorState(operandOneTextView.getText().toString(),
+                operandTwoTextView.getText().toString(),
+                operatorTextView.getText().toString(),
+                resultTextView.getText().toString(),
+                completeOperationTextView.getText().toString(),
+                operator,
+                sw.getText().toString(),
+                sw.isChecked());
+        outState.putParcelable("CALCULATOR_STATE", calculatorState);
+        SharedPreferences.Editor preferencesEditor = preferences.edit();
+        preferencesEditor.putBoolean("ACTIVITY_RECREATING", true);
+        preferencesEditor.apply();
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        operandOneTextView.setText(savedInstanceState.getString(KEY_OPERAND1, ""));
-        operandTwoTextView.setText(savedInstanceState.getString(KEY_OPERAND2, ""));
-        operatorTextView.setText(savedInstanceState.getString(KEY_OPERATOR, ""));
-        resultTextView.setText(savedInstanceState.getString(KEY_RESULT, ""));
-        completeOperationTextView.setText(savedInstanceState.getString(KEY_COMPLETE_OPERATION, ""));
-        operator = getOperatorFromString(savedInstanceState.getString(KEY_OPERATOR_VALUE, ""));
+        CalculatorState calculatorState = savedInstanceState.getParcelable("CALCULATOR_STATE");
+        operandOneTextView.setText(calculatorState.getOperand1());
+        operandTwoTextView.setText(calculatorState.getOperand2());
+        operatorTextView.setText(calculatorState.getOperatorText());
+        resultTextView.setText(calculatorState.getResultText());
+        completeOperationTextView.setText(calculatorState.getCompleteOperation());
+        operator = calculatorState.getOperator();
+        sw.setChecked(calculatorState.getSwChecked());
+        sw.setText(calculatorState.getSwText());
+        SharedPreferences.Editor preferencesEditor = preferences.edit();
+        activityRecreating = false;
+        preferencesEditor.putBoolean("ACTIVITY_RECREATING", false);
+        preferencesEditor.apply();
+    }
+
+    private void initSwitchTheme() {
+        sw.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor preferencesEditor = preferences.edit();
+            preferencesEditor.putBoolean("USE_DARK_THEME", !preferences.getBoolean("USE_DARK_THEME",false));
+            if (isChecked) {
+                sw.setText("Dark Theme");
+                preferencesEditor.putBoolean("USE_DARK_THEME", true);
+            } else {
+                sw.setText("Light Theme");
+                preferencesEditor.putBoolean("USE_DARK_THEME", false);
+            }
+            preferencesEditor.apply();
+            if (!activityRecreating) {
+                recreate();
+            }
+
+        });
     }
 
     private void initButtons() {
@@ -150,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Operator getOperatorFromString(String operatorString) {
         return Arrays.stream(Operator.values())
-                .filter(it -> getString(it.getOperatorResource()).trim().equals(operatorString))
+                .filter(it -> it.getOperatorString().equals(operatorString))
                 .findFirst()
                 .orElse(Operator.NULL);
     }
