@@ -34,14 +34,14 @@
         <item name="android:maxLines">1</item>
         <item name="android:textAlignment">textEnd</item>
         <item name="android:textSize">@dimen/input_text_size</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">?colorPrimary</item>
     </style>
 
     <style name="Theme.MyCalculator.InputTextViewStyle.OperationTextViewStyle" parent="Theme.MyCalculator.InputTextViewStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:maxLength">1</item>
         <item name="android:textSize">@dimen/operator_text_size</item>
-        <item name="android:textColor">@color/button_number_color</item>
+        <item name="android:textColor">?colorPrimaryVariant</item>
     </style>
 
     <style name="Theme.MyCalculator.LinearLayoutStyle">
@@ -54,4 +54,8 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
 </resources>

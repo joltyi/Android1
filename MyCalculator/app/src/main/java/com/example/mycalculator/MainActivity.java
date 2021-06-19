@@ -2,10 +2,14 @@ package com.example.mycalculator;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,10 +17,13 @@ import android.widget.Toast;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
-    private final static int MAX_OPERAND_LENGTH = 15;
+import static com.example.mycalculator.Constants.KEY_CALCULATOR_STATE;
+import static com.example.mycalculator.Constants.KEY_NIGHT_THEME;
+import static com.example.mycalculator.Constants.MAX_OPERAND_LENGTH;
+import static com.example.mycalculator.Constants.MY_SHARED_PREFERENCES;
 
-    SharedPreferences preferences;
+public class MainActivity extends AppCompatActivity {
+    private SharedPreferences preferences;
 
     private TextView operandOneTextView;
     private TextView operandTwoTextView;
@@ -25,15 +32,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView resultTextView;
     private Operator operator;
 
-    private SwitchCompat sw;
-    private boolean activityRecreating;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        preferences = getPreferences(MODE_PRIVATE);
-        setTheme(preferences.getBoolean("USE_DARK_THEME",false) ? R.style.AppThemeDark : R.style.AppThemeLight);
+        preferences = getSharedPreferences(MY_SHARED_PREFERENCES, MODE_PRIVATE);
 
         setContentView(R.layout.activity_main);
         operandOneTextView = findViewById(R.id.input_value_1);
@@ -44,11 +47,44 @@ public class MainActivity extends AppCompatActivity {
         operator = Operator.NULL;
         initButtons();
 
-        sw = findViewById(R.id.change_theme);
-        activityRecreating = preferences.getBoolean("ACTIVITY_RECREATING", false);
-        initSwitchTheme();
+        checkNightModeActivated();
+    }
 
+    public void checkNightModeActivated() {
+        if (preferences.getBoolean(KEY_NIGHT_THEME, false)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            Intent runSettings = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivityForResult(runSettings, RESULT_OK);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode != RESULT_CANCELED) {
+            super.onActivityResult(requestCode, resultCode, data);
+        } else if (resultCode == RESULT_OK) {
+            SharedPreferences.Editor editor = preferences.edit();
+            boolean darkTheme = data.getExtras().getBoolean(Constants.KEY_NIGHT_THEME);
+            editor.putBoolean(KEY_NIGHT_THEME, darkTheme).apply();
+            recreate();
+        }
     }
 
     @Override
@@ -59,50 +95,24 @@ public class MainActivity extends AppCompatActivity {
                 operatorTextView.getText().toString(),
                 resultTextView.getText().toString(),
                 completeOperationTextView.getText().toString(),
-                operator,
-                sw.getText().toString(),
-                sw.isChecked());
-        outState.putParcelable("CALCULATOR_STATE", calculatorState);
+                operator);
+        outState.putParcelable(KEY_CALCULATOR_STATE, calculatorState);
         SharedPreferences.Editor preferencesEditor = preferences.edit();
-        preferencesEditor.putBoolean("ACTIVITY_RECREATING", true);
         preferencesEditor.apply();
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        CalculatorState calculatorState = savedInstanceState.getParcelable("CALCULATOR_STATE");
+        CalculatorState calculatorState = savedInstanceState.getParcelable(KEY_CALCULATOR_STATE);
         operandOneTextView.setText(calculatorState.getOperand1());
         operandTwoTextView.setText(calculatorState.getOperand2());
         operatorTextView.setText(calculatorState.getOperatorText());
         resultTextView.setText(calculatorState.getResultText());
         completeOperationTextView.setText(calculatorState.getCompleteOperation());
         operator = calculatorState.getOperator();
-        sw.setChecked(calculatorState.getSwChecked());
-        sw.setText(calculatorState.getSwText());
         SharedPreferences.Editor preferencesEditor = preferences.edit();
-        activityRecreating = false;
-        preferencesEditor.putBoolean("ACTIVITY_RECREATING", false);
         preferencesEditor.apply();
-    }
-
-    private void initSwitchTheme() {
-        sw.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            SharedPreferences.Editor preferencesEditor = preferences.edit();
-            preferencesEditor.putBoolean("USE_DARK_THEME", !preferences.getBoolean("USE_DARK_THEME",false));
-            if (isChecked) {
-                sw.setText("Dark Theme");
-                preferencesEditor.putBoolean("USE_DARK_THEME", true);
-            } else {
-                sw.setText("Light Theme");
-                preferencesEditor.putBoolean("USE_DARK_THEME", false);
-            }
-            preferencesEditor.apply();
-            if (!activityRecreating) {
-                recreate();
-            }
-
-        });
     }
 
     private void initButtons() {
