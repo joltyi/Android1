@@ -15,21 +15,12 @@
 
     </style>
 
-    <style name="AppThemeLight" parent="Theme.MaterialComponents.Light">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="colorPrimary">@color/button_number_color</item>
         <item name="colorPrimaryVariant">@color/button_operation_color</item>
 
     </style>
-    <style name="AppThemeDark" parent="Theme.MaterialComponents.DayNight">
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
-        <item name="colorPrimary">#F44336</item>
-        <item name="colorPrimaryVariant">#FF9800</item>
-    </style>
-    <!-- This will set the fade in animation on all your activities by default -->
-    <style name="WindowAnimationTransition">
-        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
-        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
-    </style>
+
 
 </resources>
