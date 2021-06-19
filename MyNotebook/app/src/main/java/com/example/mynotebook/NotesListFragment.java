@@ -1,8 +1,8 @@
 package com.example.mynotebook;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -52,8 +52,7 @@ public class NotesListFragment extends Fragment {
             currentNote = notes.get(0);
         }
         if (isLandscape) {
-//            showLandNote(currentNote);
-
+            showLandscapeNoteDetails(currentNote);
         }
     }
 
@@ -92,24 +91,33 @@ public class NotesListFragment extends Fragment {
 
     private void initCurrentNote(MyNote note) {
         currentNote = note;
-        showNote(note);
+        showNoteDetails(note);
     }
 
-    private void showNote(MyNote currentNote) {
+    private void showNoteDetails(MyNote currentNote) {
         if (isLandscape) {
-//            showLandNote(currentNote);
+            showLandscapeNoteDetails(currentNote);
         } else {
-            showPortraitNote(currentNote);
+            showPortraitNoteDetails(currentNote);
         }
     }
 
-    private void showPortraitNote(MyNote currentNote) {
+    private void showPortraitNoteDetails(MyNote note) {
+        NoteDetailsFragment fragment = NoteDetailsFragment.newInstance(note);
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(NOTES_LIST)
+                .replace(R.id.notes_list_layout, fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
+    }
+
+    private void showLandscapeNoteDetails(MyNote note) {
         NoteDetailsFragment fragment = NoteDetailsFragment.newInstance(currentNote);
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.addToBackStack(NOTES_LIST);
-        fragmentTransaction.replace(R.id.notes_list, fragment);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.commit();
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.note_details_layout, fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
     }
 }
