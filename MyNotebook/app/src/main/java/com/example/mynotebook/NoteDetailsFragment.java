@@ -9,8 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import static com.example.mynotebook.Constants.CURRENT_NOTE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,9 +18,7 @@ import java.util.Locale;
  */
 public class NoteDetailsFragment extends Fragment {
 
-    private static final String CURRENT_NOTE = "CurrentNote";
-
-    private MyNote myNote;
+    private MyNote currentNote;
 
     public NoteDetailsFragment() {
         // Required empty public constructor
@@ -39,7 +36,7 @@ public class NoteDetailsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            myNote = getArguments().getParcelable(CURRENT_NOTE);
+            currentNote = getArguments().getParcelable(CURRENT_NOTE);
         }
     }
 
@@ -48,11 +45,11 @@ public class NoteDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_note_details, container, false);
         TextView titleTextView = view.findViewById(R.id.note_title);
-        titleTextView.setText(myNote.getTitle());
+        titleTextView.setText(currentNote.getTitle());
         TextView detailsTextView = view.findViewById(R.id.note_details);
-        detailsTextView.setText(myNote.getDetails());
+        detailsTextView.setText(currentNote.getDetails());
         TextView dateTextView = view.findViewById(R.id.note_date);
-        dateTextView.setText(Utils.dateToString(myNote.getCreateDateTime()));
+        dateTextView.setText(Utils.dateToString(currentNote.getCreateDateTime()));
         return view;
     }
 }
