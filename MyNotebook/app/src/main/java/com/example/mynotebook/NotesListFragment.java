@@ -17,14 +17,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.example.mynotebook.Constants.CURRENT_NOTE;
 import static com.example.mynotebook.Constants.NOTES_LIST;
 
 public class NotesListFragment extends Fragment {
 
-    private List<MyNote> notes;
+    private Map<MyNote, TextView> notes;
     private boolean isLandscape;
 
     @Override
@@ -54,15 +57,17 @@ public class NotesListFragment extends Fragment {
     }
 
     private MyNote getCurrentNote() {
-        return notes.stream()
+        return notes.keySet()
+                .stream()
                 .filter(MyNote::getCurrent)
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("No Current Note"));
     }
 
     private void setCurrentNote(MyNote note) {
-        notes.forEach(n -> n.setCurrent(false));
-        notes.stream()
+        notes.keySet().forEach(n -> n.setCurrent(false));
+        notes.keySet()
+                .stream()
                 .filter(n -> n.equals(note))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("No Current Note"))
@@ -70,17 +75,20 @@ public class NotesListFragment extends Fragment {
     }
 
     private void initNotesList(View view) {
-        notes = Constants.MY_NOTES;
-        notes.forEach(note -> {
-            Context context = getContext();
-            if (context != null) {
-                LinearLayout layout = (LinearLayout) view;
-                layout.setOrientation(LinearLayout.VERTICAL);
-                layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                layout.addView(initTitleTextView(context, note));
-                layout.addView(initDateTextView(context, note));
-            }
-        });
+        notes = new HashMap<>();
+        Constants.MY_NOTES
+                .forEach(note -> {
+                    Context context = getContext();
+                    if (context != null) {
+                        LinearLayout layout = (LinearLayout) view;
+                        layout.setOrientation(LinearLayout.VERTICAL);
+                        layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+                        TextView titleTextView = initTitleTextView(context, note);
+                        notes.put(note, titleTextView);
+                        layout.addView(titleTextView);
+                        layout.addView(initDateTextView(context, note));
+                    }
+                });
     }
 
     private TextView initTitleTextView(Context context, MyNote note) {
@@ -89,7 +97,7 @@ public class NotesListFragment extends Fragment {
         titleView.setLayoutParams(lparams);
         titleView.setText(note.getTitle());
         titleView.setTextSize(getResources().getInteger(R.integer.list_title_text_size));
-        if (note.getCurrent() && !isLandscape) {
+        if (note.getCurrent()) {
             titleView.setTextSize(getResources().getInteger(R.integer.list_title_selected_text_size));
         }
         titleView.setTextColor(getResources().getColor(R.color.teal_700, context.getTheme()));
@@ -97,7 +105,7 @@ public class NotesListFragment extends Fragment {
                 getResources().getInteger(R.integer.list_title_padding_top),
                 getResources().getInteger(R.integer.list_title_padding_right),
                 getResources().getInteger(R.integer.list_title_padding_bottom));
-        titleView.setOnClickListener(v -> showNoteDetails(note, titleView));
+        titleView.setOnClickListener(v -> showNoteDetails(note));
         return titleView;
     }
 
@@ -108,9 +116,15 @@ public class NotesListFragment extends Fragment {
         return dateView;
     }
 
-    private void showNoteDetails(MyNote note, TextView titleView) {
+    private void showNoteDetails(MyNote note) {
         setCurrentNote(note);
         if (isLandscape) {
+            notes.forEach((note1, titleView) -> {
+                titleView.setTextSize(getResources().getInteger(R.integer.list_title_text_size));
+                if (note1.getCurrent()) {
+                    titleView.setTextSize(getResources().getInteger(R.integer.list_title_selected_text_size));
+                }
+            });
             showLandscapeNoteDetails(note);
         } else {
             showPortraitNoteDetails(note);
