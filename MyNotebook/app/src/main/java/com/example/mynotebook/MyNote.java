@@ -7,16 +7,19 @@ import android.os.Parcelable;
 import androidx.annotation.RequiresApi;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class MyNote implements Parcelable {
     private String title;
     private String details;
     private LocalDateTime createDateTime;
+    private Boolean current;
 
-    public MyNote(String title, String details, LocalDateTime createDateTime) {
+    public MyNote(String title, String details, LocalDateTime createDateTime, Boolean current) {
         this.title = title;
         this.details = details;
         this.createDateTime = createDateTime;
+        this.current = current;
     }
 
     public MyNote() {
@@ -66,6 +69,14 @@ public class MyNote implements Parcelable {
         this.createDateTime = createDateTime;
     }
 
+    public Boolean getCurrent() {
+        return current;
+    }
+
+    public void setCurrent(Boolean current) {
+        this.current = current;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -77,5 +88,21 @@ public class MyNote implements Parcelable {
         dest.writeString(title);
         dest.writeString(details);
         dest.writeSerializable(createDateTime);
+        dest.writeSerializable(current);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MyNote myNote = (MyNote) o;
+        return Objects.equals(title, myNote.title) &&
+                Objects.equals(details, myNote.details) &&
+                Objects.equals(createDateTime, myNote.createDateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, details, createDateTime);
     }
 }

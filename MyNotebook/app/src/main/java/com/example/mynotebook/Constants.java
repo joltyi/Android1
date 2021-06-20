@@ -8,9 +8,9 @@ public class Constants {
 
     public static final List<MyNote> MY_NOTES = new ArrayList<MyNote>() {
         {
-            add(new MyNote("My Note #1", "My Note #1 Details", LocalDateTime.now()));
-            add(new MyNote("My Note #2", "My Note #2 Details", LocalDateTime.now().minusDays(1)));
-            add(new MyNote("My Note #3", "My Note #3 Details", LocalDateTime.now().minusDays(2)));
+            add(new MyNote("My Note #1", "My Note #1 Details", LocalDateTime.now(), true));
+            add(new MyNote("My Note #2", "My Note #2 Details", LocalDateTime.now().minusYears(1), false));
+            add(new MyNote("My Note #3", "My Note #3 Details", LocalDateTime.now().minusYears(2), false));
         }
     };
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="list_title_selected_text_size">25</integer>
+    <integer name="list_title_text_size">20</integer>
+    <integer name="list_title_padding_left">0</integer>
+    <integer name="list_title_padding_top">30</integer>
+    <integer name="list_title_padding_right">0</integer>
+    <integer name="list_title_padding_bottom">0</integer>
+</resources>

@@ -25,7 +25,6 @@ import static com.example.mynotebook.Constants.NOTES_LIST;
 public class NotesListFragment extends Fragment {
 
     private List<MyNote> notes;
-    private MyNote currentNote;
     private boolean isLandscape;
 
     @Override
@@ -38,8 +37,8 @@ public class NotesListFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable(CURRENT_NOTE, currentNote);
         super.onSaveInstanceState(outState);
+        outState.putParcelable(CURRENT_NOTE, getCurrentNote());
     }
 
     @Override
@@ -47,13 +46,27 @@ public class NotesListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
         if (savedInstanceState != null) {
-            currentNote = savedInstanceState.getParcelable(CURRENT_NOTE);
-        } else {
-            currentNote = notes.get(0);
+            setCurrentNote(savedInstanceState.getParcelable(CURRENT_NOTE));
         }
         if (isLandscape) {
-            showLandscapeNoteDetails(currentNote);
+            showLandscapeNoteDetails(getCurrentNote());
         }
+    }
+
+    private MyNote getCurrentNote() {
+        return notes.stream()
+                .filter(MyNote::getCurrent)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No Current Note"));
+    }
+
+    private void setCurrentNote(MyNote note) {
+        notes.forEach(n -> n.setCurrent(false));
+        notes.stream()
+                .filter(n -> n.equals(note))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No Current Note"))
+                .setCurrent(true);
     }
 
     private void initNotesList(View view) {
@@ -75,10 +88,16 @@ public class NotesListFragment extends Fragment {
         TextView titleView = new TextView(context);
         titleView.setLayoutParams(lparams);
         titleView.setText(note.getTitle());
-        titleView.setTextSize(20);
+        titleView.setTextSize(getResources().getInteger(R.integer.list_title_text_size));
+        if (note.getCurrent() && !isLandscape) {
+            titleView.setTextSize(getResources().getInteger(R.integer.list_title_selected_text_size));
+        }
         titleView.setTextColor(getResources().getColor(R.color.teal_700, context.getTheme()));
-        titleView.setPadding(0, 30, 0, 0);
-        titleView.setOnClickListener(v -> initCurrentNote(note));
+        titleView.setPadding(getResources().getInteger(R.integer.list_title_padding_left),
+                getResources().getInteger(R.integer.list_title_padding_top),
+                getResources().getInteger(R.integer.list_title_padding_right),
+                getResources().getInteger(R.integer.list_title_padding_bottom));
+        titleView.setOnClickListener(v -> showNoteDetails(note, titleView));
         return titleView;
     }
 
@@ -89,16 +108,12 @@ public class NotesListFragment extends Fragment {
         return dateView;
     }
 
-    private void initCurrentNote(MyNote note) {
-        currentNote = note;
-        showNoteDetails(note);
-    }
-
-    private void showNoteDetails(MyNote currentNote) {
+    private void showNoteDetails(MyNote note, TextView titleView) {
+        setCurrentNote(note);
         if (isLandscape) {
-            showLandscapeNoteDetails(currentNote);
+            showLandscapeNoteDetails(note);
         } else {
-            showPortraitNoteDetails(currentNote);
+            showPortraitNoteDetails(note);
         }
     }
 
@@ -113,7 +128,7 @@ public class NotesListFragment extends Fragment {
     }
 
     private void showLandscapeNoteDetails(MyNote note) {
-        NoteDetailsFragment fragment = NoteDetailsFragment.newInstance(currentNote);
+        NoteDetailsFragment fragment = NoteDetailsFragment.newInstance(note);
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.note_details_layout, fragment)
