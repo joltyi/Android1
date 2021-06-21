@@ -41,22 +41,30 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, query, Toast.LENGTH_SHORT).show();
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 return true;
             }
         });
-        MenuItem sort = menu.findItem(R.id.menu_sort);
-        sort.setOnMenuItemClickListener(item -> {
-            Toast.makeText(MainActivity.this, R.string.menu_sort, Toast.LENGTH_SHORT).show();
-            return true;
-        });
-        MenuItem send = menu.findItem(R.id.menu_add);
-        send.setOnMenuItemClickListener(item -> {
-            Toast.makeText(MainActivity.this, R.string.menu_add, Toast.LENGTH_SHORT).show();
-            return true;
-        });
-        return true;
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        switch (id) {
+            case R.id.menu_add:
+//                addFragment(new AddNoteFragment());
+                Toast.makeText(MainActivity.this, R.string.menu_add, Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_sort:
+                Toast.makeText(MainActivity.this, R.string.menu_sort, Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_search:
+                Toast.makeText(MainActivity.this, R.string.menu_search, Toast.LENGTH_SHORT).show();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(menuItem);
     }
 }
