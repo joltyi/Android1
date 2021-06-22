@@ -7,4 +7,5 @@
     <string name="menu_favorite">Favorite</string>
     <string name="menu_sort">Sort</string>
     <string name="menu_add">Add</string>
+    <string name="stub_add_note_text">Stub Add Note Text</string>
 </resources>

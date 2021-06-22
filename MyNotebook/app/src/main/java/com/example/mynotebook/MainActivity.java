@@ -2,6 +2,7 @@ package com.example.mynotebook;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         int id = menuItem.getItemId();
         switch (id) {
             case R.id.menu_add:
-//                addFragment(new AddNoteFragment());
+                addFragment(new AddNoteFragment());
                 Toast.makeText(MainActivity.this, R.string.menu_add, Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.menu_sort:
@@ -66,5 +67,17 @@ public class MainActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(menuItem);
+    }
+
+    private void addFragment(Fragment fragment){
+        //Получить менеджер фрагментов
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // Открыть транзакцию
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.notes_list_layout, fragment);
+        // Добавить транзакцию в бэкстек
+        fragmentTransaction.addToBackStack(null);
+        // Закрыть транзакцию
+        fragmentTransaction.commit();
     }
 }
