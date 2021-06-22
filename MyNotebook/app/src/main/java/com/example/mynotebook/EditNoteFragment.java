@@ -9,25 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.mynotebook.utils.DateUtils;
-
 import static com.example.mynotebook.Constants.CURRENT_NOTE;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link NoteDetailsFragment#newInstance} factory method to
+ * Use the {@link EditNoteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NoteDetailsFragment extends Fragment {
+public class EditNoteFragment extends Fragment {
 
     private MyNote currentNote;
 
-    public NoteDetailsFragment() {
+    public EditNoteFragment() {
         // Required empty public constructor
     }
 
-    public static NoteDetailsFragment newInstance(MyNote myNote) {
-        NoteDetailsFragment fragment = new NoteDetailsFragment();
+    public static EditNoteFragment newInstance(MyNote myNote) {
+        EditNoteFragment fragment = new EditNoteFragment();
         Bundle args = new Bundle();
         args.putParcelable(CURRENT_NOTE, myNote);
         fragment.setArguments(args);
@@ -45,13 +43,9 @@ public class NoteDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_note_details, container, false);
-        TextView titleTextView = view.findViewById(R.id.note_title);
-        titleTextView.setText(currentNote.getTitle());
-        TextView detailsTextView = view.findViewById(R.id.note_details);
-        detailsTextView.setText(currentNote.getDetails());
-        TextView dateTextView = view.findViewById(R.id.note_date);
-        dateTextView.setText(DateUtils.dateToString(currentNote.getCreateDateTime()));
+        View view = inflater.inflate(R.layout.fragment_edit_note, container, false);
+        TextView titleTextView = view.findViewById(R.id.edit_note);
+        titleTextView.setText(String.format("Stub Edit Note: %s ", currentNote.getTitle()));
         return view;
     }
 }

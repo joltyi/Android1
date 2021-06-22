@@ -8,4 +8,8 @@
     <string name="menu_sort">Sort</string>
     <string name="menu_add">Add</string>
     <string name="stub_add_note_text">Stub Add Note Text</string>
+    <string name="stub_edit_note_text">Stub Edit Note Text</string>
+    <string name="popup_edit">Edit</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
