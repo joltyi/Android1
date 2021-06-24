@@ -1,26 +1,28 @@
 package com.example.mynotebook;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.mynotebook.utils.DateUtils;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.example.mynotebook.Constants.CURRENT_NOTE;
 import static com.example.mynotebook.Constants.NOTES_LIST;
@@ -111,8 +113,25 @@ public class NotesListFragment extends Fragment {
 
     private TextView initDateTextView(Context context, MyNote note) {
         TextView dateView = new TextView(context);
-        dateView.setText(Utils.dateToString(note.getCreateDateTime()));
+        dateView.setText(DateUtils.dateToString(note.getCreateDateTime()));
         dateView.setTextColor(getResources().getColor(R.color.teal_200, context.getTheme()));
+        dateView.setOnClickListener(v -> {
+            Activity activity = requireActivity();
+            PopupMenu popupMenu = new PopupMenu(activity, v);
+            Menu menu = popupMenu.getMenu();
+            activity.getMenuInflater().inflate(R.menu.popup_menu, menu);
+            popupMenu.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
+                switch (id) {
+                    case R.id.popup_edit:
+                        showEditNoteFragment(note);
+                        Toast.makeText(getContext(), R.string.popup_edit, Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+                return true;
+            });
+            popupMenu.show();
+        });
         return dateView;
     }
 
@@ -149,4 +168,15 @@ public class NotesListFragment extends Fragment {
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .commit();
     }
+
+    private void showEditNoteFragment(MyNote note) {
+        EditNoteFragment fragment = EditNoteFragment.newInstance(note);
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(NOTES_LIST)
+                .replace(R.id.notes_list_layout, fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
+    }
+
 }
