@@ -3,4 +3,5 @@
     <dimen name="details_maringn_top">22dp</dimen>
     <dimen name="details_title_text_size">40sp</dimen>
     <dimen name="details_details_text_size">20sp</dimen>
+    <dimen name="stub_text_size">40sp</dimen>
 </resources>
