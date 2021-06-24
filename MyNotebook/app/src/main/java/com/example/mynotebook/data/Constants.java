@@ -1,4 +1,4 @@
-package com.example.mynotebook;
+package com.example.mynotebook.data;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

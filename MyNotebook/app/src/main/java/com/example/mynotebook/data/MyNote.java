@@ -1,4 +1,4 @@
-package com.example.mynotebook;
+package com.example.mynotebook.data;
 
 import android.os.Build;
 import android.os.Parcel;

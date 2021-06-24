@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.mynotebook.ui.AddNoteFragment;
+import com.example.mynotebook.ui.NotesListFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {

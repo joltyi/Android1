@@ -1,4 +1,4 @@
-package com.example.mynotebook;
+package com.example.mynotebook.ui;
 
 import android.os.Bundle;
 
@@ -9,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import static com.example.mynotebook.Constants.CURRENT_NOTE;
+import com.example.mynotebook.data.MyNote;
+import com.example.mynotebook.R;
+
+import static com.example.mynotebook.data.Constants.CURRENT_NOTE;
 
 /**
  * A simple {@link Fragment} subclass.

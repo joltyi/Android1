@@ -1,17 +1,15 @@
-package com.example.mynotebook;
+package com.example.mynotebook.ui;
 
 import android.os.Bundle;
 
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import com.example.mynotebook.R;
 
 /**
  * A simple {@link Fragment} subclass.

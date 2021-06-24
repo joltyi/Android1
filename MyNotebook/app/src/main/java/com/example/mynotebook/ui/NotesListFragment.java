@@ -1,4 +1,4 @@
-package com.example.mynotebook;
+package com.example.mynotebook.ui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,13 +19,16 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mynotebook.data.Constants;
+import com.example.mynotebook.data.MyNote;
+import com.example.mynotebook.R;
 import com.example.mynotebook.utils.DateUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.mynotebook.Constants.CURRENT_NOTE;
-import static com.example.mynotebook.Constants.NOTES_LIST;
+import static com.example.mynotebook.data.Constants.CURRENT_NOTE;
+import static com.example.mynotebook.data.Constants.NOTES_LIST;
 
 public class NotesListFragment extends Fragment {
 
