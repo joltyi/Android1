@@ -59,6 +59,9 @@ public class NotesListFragment extends Fragment {
 
         adapter.setTitleOnItemClickListener((view1, position) -> {
             currentNote = notes.getNote(position);
+            TextView textView = (TextView) view1;
+            adapter.getNoteTitles().forEach(tv -> tv.setTextSize(getResources().getInteger(R.integer.list_title_text_size)));
+            textView.setTextSize(getResources().getInteger(R.integer.list_title_selected_text_size));
             showNoteDetails(currentNote);
             Toast.makeText(getContext(), String.format("Позиция - %d", position), Toast.LENGTH_SHORT).show();
         });

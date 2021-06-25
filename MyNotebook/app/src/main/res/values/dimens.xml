@@ -6,7 +6,8 @@
     <dimen name="stub_text_size">40sp</dimen>
     <dimen name="card_corner_radius">15dp</dimen>
     <dimen name="card_elevation">3dp</dimen>
-    <dimen name="card_title_textsize">30sp</dimen>
+    <dimen name="card_title_textsize">25sp</dimen>
+    <dimen name="card_title_selected_textsize">30sp</dimen>
     <dimen name="card_date_textsize">20sp</dimen>
     <dimen name="card_padding">10dp</dimen>
     <dimen name="card_padding_small">5dp</dimen>

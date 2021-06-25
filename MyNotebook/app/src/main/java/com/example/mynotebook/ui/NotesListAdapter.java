@@ -14,11 +14,17 @@ import com.example.mynotebook.data.Note;
 import com.example.mynotebook.data.Notes;
 import com.example.mynotebook.utils.DateUtils;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyViewHolder> {
 
     private OnItemClickListener titleClickListener;
     private OnItemClickListener dateClickListener;
     private Notes notes;
+    private List<TextView> noteTitles = new ArrayList<>();
 
     public NotesListAdapter(Notes notes){
         this.notes = notes;
@@ -28,6 +34,8 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyVi
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_card, parent, false);
+        MyViewHolder viewHolder = new MyViewHolder(v);
+        noteTitles.add(viewHolder.title);
         return new MyViewHolder(v);
     }
 
@@ -41,15 +49,16 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyVi
         return notes.getSize();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public List<TextView> getNoteTitles() {
+        return noteTitles;
+    }
 
-        private LinearLayout layout;
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
         private TextView date;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            layout = itemView.findViewById(R.id.card_layout_main);
             initTitle(itemView);
             initDate(itemView);
         }
