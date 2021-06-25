@@ -9,39 +9,39 @@ import androidx.annotation.RequiresApi;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class MyNote implements Parcelable {
+public class Note implements Parcelable {
     private String title;
     private String details;
     private LocalDateTime createDateTime;
     private Boolean current;
 
-    public MyNote(String title, String details, LocalDateTime createDateTime, Boolean current) {
+    public Note(String title, String details, LocalDateTime createDateTime, Boolean current) {
         this.title = title;
         this.details = details;
         this.createDateTime = createDateTime;
         this.current = current;
     }
 
-    public MyNote() {
+    public Note() {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    protected MyNote(Parcel in) {
+    protected Note(Parcel in) {
         title = in.readString();
         details = in.readString();
         createDateTime = (LocalDateTime) in.readSerializable();
     }
 
-    public static final Creator<MyNote> CREATOR = new Creator<MyNote>() {
+    public static final Creator<Note> CREATOR = new Creator<Note>() {
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
-        public MyNote createFromParcel(Parcel in) {
-            return new MyNote(in);
+        public Note createFromParcel(Parcel in) {
+            return new Note(in);
         }
 
         @Override
-        public MyNote[] newArray(int size) {
-            return new MyNote[size];
+        public Note[] newArray(int size) {
+            return new Note[size];
         }
     };
 
@@ -95,10 +95,10 @@ public class MyNote implements Parcelable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MyNote myNote = (MyNote) o;
-        return Objects.equals(title, myNote.title) &&
-                Objects.equals(details, myNote.details) &&
-                Objects.equals(createDateTime, myNote.createDateTime);
+        Note note = (Note) o;
+        return Objects.equals(title, note.title) &&
+                Objects.equals(details, note.details) &&
+                Objects.equals(createDateTime, note.createDateTime);
     }
 
     @Override
