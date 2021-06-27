@@ -47,7 +47,7 @@ public class NoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_view_note, container, false);
+        View view = inflater.inflate(R.layout.fragment_note, container, false);
         TextView titleTextView = view.findViewById(R.id.note_title);
         titleTextView.setText(currentNote.getTitle());
         TextView detailsTextView = view.findViewById(R.id.note_details);

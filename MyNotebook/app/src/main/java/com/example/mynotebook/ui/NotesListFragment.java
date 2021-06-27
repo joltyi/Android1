@@ -2,11 +2,11 @@ package com.example.mynotebook.ui;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -28,14 +28,14 @@ import com.example.mynotebook.R;
 import com.example.mynotebook.data.Notes;
 import com.example.mynotebook.data.NotesImpl;
 
+import java.util.Objects;
+
 import static com.example.mynotebook.data.Constants.CURRENT_NOTE;
-import static com.example.mynotebook.data.Constants.NOTES_LIST;
 
 public class NotesListFragment extends Fragment {
 
     private Navigation navigation;
     private Note currentNote;
-    private boolean isLandscape;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,15 +68,12 @@ public class NotesListFragment extends Fragment {
         NotesListAdapter adapter = new NotesListAdapter(notes);
         recyclerView.setAdapter(adapter);
         DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
-        itemDecoration.setDrawable(getResources().getDrawable(R.drawable.separator, getActivity().getTheme()));
+        itemDecoration.setDrawable(Objects.requireNonNull(ResourcesCompat.getDrawable(getResources(), R.drawable.separator, getActivity().getTheme())));
         recyclerView.addItemDecoration(itemDecoration);
 
         adapter.setTitleOnItemClickListener((view1, position) -> {
             currentNote = notes.getNote(position);
-            TextView textView = (TextView) view1;
-            adapter.getNoteTitles().forEach(tv -> tv.setTextSize(getResources().getInteger(R.integer.list_title_text_size)));
-            textView.setTextSize(getResources().getInteger(R.integer.list_title_selected_text_size));
-            showNoteDetails(currentNote);
+            showNote(currentNote);
             Toast.makeText(getContext(), String.format("Позиция - %d", position), Toast.LENGTH_SHORT).show();
         });
 
@@ -89,7 +86,7 @@ public class NotesListFragment extends Fragment {
                 int id = item.getItemId();
                 switch (id) {
                     case R.id.popup_edit:
-                        showEditNoteFragment(currentNote);
+                        showNote(currentNote);
                         Toast.makeText(getContext(), R.string.popup_edit, Toast.LENGTH_SHORT).show();
                         return true;
                 }
@@ -108,37 +105,12 @@ public class NotesListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
         if (savedInstanceState != null) {
             currentNote = savedInstanceState.getParcelable(CURRENT_NOTE);
         }
-        if (isLandscape) {
-            showLandscapeNoteDetails(currentNote);
-        }
     }
 
-    private void showNoteDetails(Note note) {
-        if (isLandscape) {
-            showLandscapeNoteDetails(note);
-        } else {
-            showPortraitNoteDetails(note);
-        }
-    }
-
-    private void showPortraitNoteDetails(Note note) {
-        navigation.addFragment(NoteFragment.newInstance(note), true);
-    }
-
-    private void showLandscapeNoteDetails(Note note) {
-        NoteFragment fragment = NoteFragment.newInstance(note);
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.note_details_layout, fragment)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
-    }
-
-    private void showEditNoteFragment(Note note) {
+    private void showNote(Note note) {
         navigation.addFragment(NoteFragment.newInstance(note), true);
     }
 
