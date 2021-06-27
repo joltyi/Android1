@@ -17,22 +17,23 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mynotebook.MainActivity;
+import com.example.mynotebook.Navigation;
 import com.example.mynotebook.data.Note;
 import com.example.mynotebook.R;
 import com.example.mynotebook.data.Notes;
 import com.example.mynotebook.data.NotesImpl;
-import com.example.mynotebook.utils.DateUtils;
 
 import static com.example.mynotebook.data.Constants.CURRENT_NOTE;
 import static com.example.mynotebook.data.Constants.NOTES_LIST;
 
 public class NotesListFragment extends Fragment {
 
+    private Navigation navigation;
     private Note currentNote;
     private boolean isLandscape;
 
@@ -44,6 +45,19 @@ public class NotesListFragment extends Fragment {
         currentNote = notes.getNote(0);
         initRecyclerView(view, notes);
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        MainActivity activity = (MainActivity)context;
+        navigation = activity.getNavigation();
+    }
+
+    @Override
+    public void onDetach() {
+        navigation = null;
+        super.onDetach();
     }
 
     private void initRecyclerView(View view, Notes notes) {
@@ -112,17 +126,11 @@ public class NotesListFragment extends Fragment {
     }
 
     private void showPortraitNoteDetails(Note note) {
-        ViewNoteFragment fragment = ViewNoteFragment.newInstance(note);
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .addToBackStack(NOTES_LIST)
-                .replace(R.id.notes_list_layout, fragment)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
+        navigation.addFragment(NoteFragment.newInstance(note), true);
     }
 
     private void showLandscapeNoteDetails(Note note) {
-        ViewNoteFragment fragment = ViewNoteFragment.newInstance(note);
+        NoteFragment fragment = NoteFragment.newInstance(note);
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.note_details_layout, fragment)
@@ -131,13 +139,7 @@ public class NotesListFragment extends Fragment {
     }
 
     private void showEditNoteFragment(Note note) {
-        EditNoteFragment fragment = EditNoteFragment.newInstance(note);
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .addToBackStack(NOTES_LIST)
-                .replace(R.id.notes_list_layout, fragment)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
+        navigation.addFragment(NoteFragment.newInstance(note), true);
     }
 
 }
