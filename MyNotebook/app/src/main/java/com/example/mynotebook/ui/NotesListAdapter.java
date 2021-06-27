@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mynotebook.R;
@@ -15,19 +16,18 @@ import com.example.mynotebook.data.Notes;
 import com.example.mynotebook.utils.DateUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyViewHolder> {
 
-    private OnItemClickListener titleClickListener;
-    private OnItemClickListener dateClickListener;
     private Notes notes;
-    private List<TextView> noteTitles = new ArrayList<>();
+    private Fragment fragment;
+    private OnItemClickListener itemClickListener;
+    private OnItemLongClickListener itemLongClickListener;
 
-    public NotesListAdapter(Notes notes){
+    public NotesListAdapter(Notes notes, Fragment fragment){
         this.notes = notes;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -35,7 +35,6 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyVi
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_card, parent, false);
         MyViewHolder viewHolder = new MyViewHolder(v);
-        noteTitles.add(viewHolder.title);
         return new MyViewHolder(v);
     }
 
@@ -49,35 +48,45 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyVi
         return notes.getSize();
     }
 
-    public List<TextView> getNoteTitles() {
-        return noteTitles;
+    public void setOnItemClickListener(OnItemClickListener itemClickListener){
+        this.itemClickListener = itemClickListener;
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener itemLongClickListener){
+        this.itemLongClickListener = itemLongClickListener;
+    }
+
+    private void registerContextMenu(View itemView) {
+        if (fragment != null) {
+            itemView.setOnLongClickListener(v -> {
+                return false;
+            });
+            fragment.registerForContextMenu(itemView);
+        }
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+        private LinearLayout cardLayout;
         private TextView title;
         private TextView date;
 
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            initTitle(itemView);
-            initDate(itemView);
-        }
-
-        private void initDate(View itemView) {
+            registerContextMenu(itemView);
+            title = itemView.findViewById(R.id.card_title_text_view);
             date = itemView.findViewById(R.id.card_date_text_view);
-            date.setOnClickListener(v -> {
-                if (dateClickListener != null) {
-                    dateClickListener.onItemClick(v, getAdapterPosition());
+            cardLayout = itemView.findViewById(R.id.card_layout_main);
+            cardLayout.setOnClickListener(v -> {
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClick(v, getAdapterPosition());
                 }
             });
-        }
-
-        private void initTitle(View itemView) {
-            title = itemView.findViewById(R.id.card_title_text_view);
-            title.setOnClickListener(v -> {
-                if (titleClickListener != null) {
-                    titleClickListener.onItemClick(v, getAdapterPosition());
+            cardLayout.setOnLongClickListener(v -> {
+                if (itemLongClickListener != null) {
+                    itemLongClickListener.onItemLongClick(v, getAdapterPosition());
                 }
+                return true;
             });
         }
 
@@ -87,15 +96,11 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyVi
         }
     }
 
-    public void setTitleOnItemClickListener(OnItemClickListener itemClickListener){
-        this.titleClickListener = itemClickListener;
-    }
-
-    public void setDateOnItemClickListener(OnItemClickListener itemClickListener){
-        this.dateClickListener = itemClickListener;
-    }
-
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
+    }
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(View view, int position);
     }
 }

@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mynotebook.MainActivity;
@@ -31,6 +30,7 @@ import com.example.mynotebook.data.NotesImpl;
 import java.util.Objects;
 
 import static com.example.mynotebook.data.Constants.CURRENT_NOTE;
+import static com.example.mynotebook.data.Constants.NOTES_LIST;
 
 public class NotesListFragment extends Fragment {
 
@@ -65,19 +65,18 @@ public class NotesListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        NotesListAdapter adapter = new NotesListAdapter(notes);
+        NotesListAdapter adapter = new NotesListAdapter(notes, this);
         recyclerView.setAdapter(adapter);
         DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(Objects.requireNonNull(ResourcesCompat.getDrawable(getResources(), R.drawable.separator, getActivity().getTheme())));
         recyclerView.addItemDecoration(itemDecoration);
 
-        adapter.setTitleOnItemClickListener((view1, position) -> {
+        adapter.setOnItemClickListener((view1, position) -> {
             currentNote = notes.getNote(position);
             showNote(currentNote);
-            Toast.makeText(getContext(), String.format("Позиция - %d", position), Toast.LENGTH_SHORT).show();
         });
 
-        adapter.setDateOnItemClickListener((view1, position) -> {
+        adapter.setOnItemLongClickListener((view1, position) -> {
             Activity activity = requireActivity();
             PopupMenu popupMenu = new PopupMenu(activity, view1);
             Menu menu = popupMenu.getMenu();
@@ -87,12 +86,17 @@ public class NotesListFragment extends Fragment {
                 switch (id) {
                     case R.id.popup_edit:
                         showNote(currentNote);
-                        Toast.makeText(getContext(), R.string.popup_edit, Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.popup_delete:
+                        Toast.makeText(getContext(),
+                                String.join(" ", getResources().getString(R.string.delete), String.valueOf(position)),
+                                Toast.LENGTH_SHORT).show();
                         return true;
                 }
                 return true;
             });
             popupMenu.show();
+
         });
     }
 
@@ -111,7 +115,14 @@ public class NotesListFragment extends Fragment {
     }
 
     private void showNote(Note note) {
-        navigation.addFragment(NoteFragment.newInstance(note), true);
+//        navigation.addFragment(NoteFragment.newInstance(note), true);
+        NoteFragment fragment = NoteFragment.newInstance(note);
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(NOTES_LIST)
+                .replace(R.id.notes_list_fragment, fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .commit();
     }
 
 }
