@@ -13,13 +13,11 @@ public class Note implements Parcelable {
     private String title;
     private String details;
     private LocalDateTime createDateTime;
-    private Boolean current;
 
-    public Note(String title, String details, LocalDateTime createDateTime, Boolean current) {
+    public Note(String title, String details, LocalDateTime createDateTime) {
         this.title = title;
         this.details = details;
         this.createDateTime = createDateTime;
-        this.current = current;
     }
 
     public Note() {
@@ -69,14 +67,6 @@ public class Note implements Parcelable {
         this.createDateTime = createDateTime;
     }
 
-    public Boolean getCurrent() {
-        return current;
-    }
-
-    public void setCurrent(Boolean current) {
-        this.current = current;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -88,7 +78,6 @@ public class Note implements Parcelable {
         dest.writeString(title);
         dest.writeString(details);
         dest.writeSerializable(createDateTime);
-        dest.writeSerializable(current);
     }
 
     @Override

@@ -26,24 +26,36 @@ import com.example.mynotebook.data.Note;
 import com.example.mynotebook.R;
 import com.example.mynotebook.data.Notes;
 import com.example.mynotebook.data.NotesImpl;
+import com.example.mynotebook.observe.Observer;
+import com.example.mynotebook.observe.Publisher;
 
 import java.util.Objects;
 
+import static com.example.mynotebook.data.Constants.ALL_NOTES;
 import static com.example.mynotebook.data.Constants.CURRENT_NOTE;
 import static com.example.mynotebook.data.Constants.NOTES_LIST;
 
 public class NotesListFragment extends Fragment {
 
+    private RecyclerView recyclerView;
     private Navigation navigation;
-    private Note currentNote;
+    private Publisher publisher;
+    private Notes notes;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (notes == null) {
+            notes = new NotesImpl(getResources());
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notes_list, container, false);
-        Notes notes = new NotesImpl(getResources());
-        currentNote = notes.getNote(0);
-        initRecyclerView(view, notes);
+        setHasOptionsMenu(true);
+        initRecyclerView(view);
         return view;
     }
 
@@ -52,16 +64,18 @@ public class NotesListFragment extends Fragment {
         super.onAttach(context);
         MainActivity activity = (MainActivity)context;
         navigation = activity.getNavigation();
+        publisher = activity.getPublisher();
     }
 
     @Override
     public void onDetach() {
         navigation = null;
+        publisher = null;
         super.onDetach();
     }
 
-    private void initRecyclerView(View view, Notes notes) {
-        RecyclerView recyclerView = view.findViewById(R.id.notes_recycler_view);
+    private void initRecyclerView(View view) {
+        recyclerView = view.findViewById(R.id.notes_recycler_view);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -72,8 +86,11 @@ public class NotesListFragment extends Fragment {
         recyclerView.addItemDecoration(itemDecoration);
 
         adapter.setOnItemClickListener((view1, position) -> {
-            currentNote = notes.getNote(position);
-            showNote(currentNote);
+            showNote(notes.getNote(position));
+            publisher.subscribe(note -> {
+                notes.updateNote(position, note);
+                adapter.notifyItemChanged(position);
+            });
         });
 
         adapter.setOnItemLongClickListener((view1, position) -> {
@@ -85,12 +102,18 @@ public class NotesListFragment extends Fragment {
                 int id = item.getItemId();
                 switch (id) {
                     case R.id.popup_edit:
-                        showNote(currentNote);
+                        showNote(notes.getNote(position));
+                        publisher.subscribe(n -> {
+                            notes.updateNote(position, n);
+                            adapter.notifyItemChanged(position);
+                        });
                         return true;
                     case R.id.popup_delete:
                         Toast.makeText(getContext(),
                                 String.join(" ", getResources().getString(R.string.delete), String.valueOf(position)),
                                 Toast.LENGTH_SHORT).show();
+                        notes.deleteNote(position);
+                        adapter.notifyItemRemoved(position);
                         return true;
                 }
                 return true;
@@ -103,26 +126,26 @@ public class NotesListFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(CURRENT_NOTE, currentNote);
+        outState.putParcelable(ALL_NOTES, notes);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            currentNote = savedInstanceState.getParcelable(CURRENT_NOTE);
+            notes = savedInstanceState.getParcelable(ALL_NOTES);
         }
     }
 
     private void showNote(Note note) {
-//        navigation.addFragment(NoteFragment.newInstance(note), true);
-        NoteFragment fragment = NoteFragment.newInstance(note);
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .addToBackStack(NOTES_LIST)
-                .replace(R.id.notes_list_fragment, fragment)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
+        navigation.addFragment(NoteFragment.newInstance(note), true);
+//        NoteFragment fragment = NoteFragment.newInstance(note);
+//        requireActivity().getSupportFragmentManager()
+//                .beginTransaction()
+//                .addToBackStack(NOTES_LIST)
+//                .replace(R.id.notes_list_fragment, fragment)
+//                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+//                .commit();
     }
 
 }

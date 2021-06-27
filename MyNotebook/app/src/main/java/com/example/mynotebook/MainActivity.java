@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.mynotebook.observe.Publisher;
 import com.example.mynotebook.ui.NoteFragment;
 import com.example.mynotebook.ui.NotesListFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -23,12 +24,14 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawer;
     private Navigation navigation;
+    private Publisher publisher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         navigation = new Navigation(getSupportFragmentManager());
+        publisher = new Publisher();
 
         Toolbar toolbar = initToolbar();
         initDrawer(toolbar);
@@ -119,5 +122,9 @@ public class MainActivity extends AppCompatActivity {
 
     public Navigation getNavigation() {
         return navigation;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
     }
 }
