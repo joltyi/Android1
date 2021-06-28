@@ -9,12 +9,14 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
@@ -33,11 +35,13 @@ import java.util.Objects;
 
 import static com.example.mynotebook.data.Constants.ALL_NOTES;
 import static com.example.mynotebook.data.Constants.CURRENT_NOTE;
+import static com.example.mynotebook.data.Constants.DEFAULT_ANIMATION_DURATION;
 import static com.example.mynotebook.data.Constants.NOTES_LIST;
 
 public class NotesListFragment extends Fragment {
 
     private RecyclerView recyclerView;
+    private NotesListAdapter adapter;
     private Navigation navigation;
     private Publisher publisher;
     private Notes notes;
@@ -77,13 +81,11 @@ public class NotesListFragment extends Fragment {
     private void initRecyclerView(View view) {
         recyclerView = view.findViewById(R.id.notes_recycler_view);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        NotesListAdapter adapter = new NotesListAdapter(notes, this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new NotesListAdapter(notes, this);
         recyclerView.setAdapter(adapter);
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
-        itemDecoration.setDrawable(Objects.requireNonNull(ResourcesCompat.getDrawable(getResources(), R.drawable.separator, getActivity().getTheme())));
-        recyclerView.addItemDecoration(itemDecoration);
+        addItemDevider();
+        setItemAnimator();
 
         adapter.setOnItemClickListener((view1, position) -> {
             showNote(notes.getNote(position));
@@ -123,6 +125,20 @@ public class NotesListFragment extends Fragment {
         });
     }
 
+    private void addItemDevider() {
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
+        itemDecoration.setDrawable(Objects.requireNonNull(ResourcesCompat.getDrawable(getResources(), R.drawable.separator, getActivity().getTheme())));
+        recyclerView.addItemDecoration(itemDecoration);
+    }
+
+    private void setItemAnimator() {
+        DefaultItemAnimator animator = new DefaultItemAnimator();
+        animator.setAddDuration(DEFAULT_ANIMATION_DURATION);
+        animator.setChangeDuration(DEFAULT_ANIMATION_DURATION);
+        animator.setRemoveDuration(DEFAULT_ANIMATION_DURATION);
+        recyclerView.setItemAnimator(animator);
+    }
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -135,6 +151,29 @@ public class NotesListFragment extends Fragment {
         if (savedInstanceState != null) {
             notes = savedInstanceState.getParcelable(ALL_NOTES);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        switch (id) {
+            case R.id.menu_add:
+                navigation.addFragment(new NoteFragment(), true);
+                publisher.subscribe(note -> {
+                    notes.addNote(note);
+                    adapter.notifyItemInserted(notes.getSize() - 1);
+                    recyclerView.scrollToPosition(notes.getSize() - 1);
+                });
+                return true;
+            case R.id.menu_sort:
+                Toast.makeText(getContext(), R.string.menu_sort, Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_search:
+                Toast.makeText(getContext(), R.string.menu_search, Toast.LENGTH_SHORT).show();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(menuItem);
     }
 
     private void showNote(Note note) {

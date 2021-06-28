@@ -93,25 +93,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        int id = menuItem.getItemId();
-        switch (id) {
-            case R.id.menu_add:
-                navigation.addFragment(new NoteFragment(), false);
-                Toast.makeText(MainActivity.this, R.string.menu_add, Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu_sort:
-                Toast.makeText(MainActivity.this, R.string.menu_sort, Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu_search:
-                Toast.makeText(MainActivity.this, R.string.menu_search, Toast.LENGTH_SHORT).show();
-                return true;
-
-        }
-        return super.onOptionsItemSelected(menuItem);
-    }
-
-    @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
