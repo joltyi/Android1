@@ -117,6 +117,14 @@ public class NotesListFragment extends Fragment {
                         notes.deleteNote(position);
                         adapter.notifyItemRemoved(position);
                         return true;
+                    case R.id.popup_clone:
+                        showNote(notes.getNote(position));
+                        publisher.subscribe(n -> {
+                            notes.addNote(n);
+                            adapter.notifyItemInserted(notes.getSize() - 1);
+                            recyclerView.scrollToPosition(notes.getSize() - 1);
+                        });
+                        return true;
                 }
                 return true;
             });

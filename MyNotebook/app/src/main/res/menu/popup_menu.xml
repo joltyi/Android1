@@ -11,4 +11,9 @@
         android:orderInCategory="30"
         android:title="@string/delete" />
 
+    <item
+        android:id="@+id/popup_clone"
+        android:orderInCategory="30"
+        android:title="@string/clone" />
+
 </menu>

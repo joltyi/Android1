@@ -17,4 +17,5 @@
     <string name="icon_android">Android_Icon</string>
     <string name="example">My Notebook</string>
     <string name="delete">Delete</string>
+    <string name="clone">Clone</string>
 </resources>
