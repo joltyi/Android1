@@ -1,4 +1,4 @@
-package com.example.mynotebook;
+package com.example.mynotebook.ui;
 
 import android.os.Bundle;
 
@@ -9,27 +9,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.mynotebook.data.Note;
+import com.example.mynotebook.R;
 import com.example.mynotebook.utils.DateUtils;
 
-import static com.example.mynotebook.Constants.CURRENT_NOTE;
+import static com.example.mynotebook.data.Constants.CURRENT_NOTE;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link NoteDetailsFragment#newInstance} factory method to
+ * Use the {@link ViewNoteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NoteDetailsFragment extends Fragment {
+public class ViewNoteFragment extends Fragment {
 
-    private MyNote currentNote;
+    private Note currentNote;
 
-    public NoteDetailsFragment() {
+    public ViewNoteFragment() {
         // Required empty public constructor
     }
 
-    public static NoteDetailsFragment newInstance(MyNote myNote) {
-        NoteDetailsFragment fragment = new NoteDetailsFragment();
+    public static ViewNoteFragment newInstance(Note note) {
+        ViewNoteFragment fragment = new ViewNoteFragment();
         Bundle args = new Bundle();
-        args.putParcelable(CURRENT_NOTE, myNote);
+        args.putParcelable(CURRENT_NOTE, note);
         fragment.setArguments(args);
         return fragment;
     }
@@ -45,7 +47,7 @@ public class NoteDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_note_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_view_note, container, false);
         TextView titleTextView = view.findViewById(R.id.note_title);
         titleTextView.setText(currentNote.getTitle());
         TextView detailsTextView = view.findViewById(R.id.note_details);
