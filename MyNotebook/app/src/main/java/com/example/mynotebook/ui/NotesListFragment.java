@@ -100,34 +100,7 @@ public class NotesListFragment extends Fragment {
             PopupMenu popupMenu = new PopupMenu(activity, view1);
             Menu menu = popupMenu.getMenu();
             activity.getMenuInflater().inflate(R.menu.popup_menu, menu);
-            popupMenu.setOnMenuItemClickListener(item -> {
-                int id = item.getItemId();
-                switch (id) {
-                    case R.id.popup_edit:
-                        showNote(notes.getNote(position));
-                        publisher.subscribe(n -> {
-                            notes.updateNote(position, n);
-                            adapter.notifyItemChanged(position);
-                        });
-                        return true;
-                    case R.id.popup_delete:
-                        Toast.makeText(getContext(),
-                                String.join(" ", getResources().getString(R.string.delete), String.valueOf(position)),
-                                Toast.LENGTH_SHORT).show();
-                        notes.deleteNote(position);
-                        adapter.notifyItemRemoved(position);
-                        return true;
-                    case R.id.popup_clone:
-                        showNote(notes.getNote(position));
-                        publisher.subscribe(n -> {
-                            notes.addNote(n);
-                            adapter.notifyItemInserted(notes.getSize() - 1);
-                            recyclerView.scrollToPosition(notes.getSize() - 1);
-                        });
-                        return true;
-                }
-                return true;
-            });
+            popupMenu.setOnMenuItemClickListener(item -> selectPopupMenuItem(item.getItemId(), position));
             popupMenu.show();
 
         });
@@ -163,8 +136,15 @@ public class NotesListFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        int id = menuItem.getItemId();
-        switch (id) {
+        return selectMenuItem(menuItem.getItemId()) || super.onOptionsItemSelected(menuItem);
+    }
+
+    private void showNote(Note note) {
+        navigation.addFragment(NoteFragment.newInstance(note), true);
+    }
+
+    private boolean selectMenuItem(int itemId) {
+        switch (itemId) {
             case R.id.menu_add:
                 navigation.addFragment(new NoteFragment(), true);
                 publisher.subscribe(note -> {
@@ -179,20 +159,35 @@ public class NotesListFragment extends Fragment {
             case R.id.menu_search:
                 Toast.makeText(getContext(), R.string.menu_search, Toast.LENGTH_SHORT).show();
                 return true;
-
         }
-        return super.onOptionsItemSelected(menuItem);
+        return false;
     }
 
-    private void showNote(Note note) {
-        navigation.addFragment(NoteFragment.newInstance(note), true);
-//        NoteFragment fragment = NoteFragment.newInstance(note);
-//        requireActivity().getSupportFragmentManager()
-//                .beginTransaction()
-//                .addToBackStack(NOTES_LIST)
-//                .replace(R.id.notes_list_fragment, fragment)
-//                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-//                .commit();
+    private boolean selectPopupMenuItem(int itemId, int position) {
+        switch (itemId) {
+            case R.id.popup_edit:
+                showNote(notes.getNote(position));
+                publisher.subscribe(n -> {
+                    notes.updateNote(position, n);
+                    adapter.notifyItemChanged(position);
+                });
+                return true;
+            case R.id.popup_delete:
+                Toast.makeText(getContext(),
+                        String.join(" ", getResources().getString(R.string.delete), String.valueOf(position)),
+                        Toast.LENGTH_SHORT).show();
+                notes.deleteNote(position);
+                adapter.notifyItemRemoved(position);
+                return true;
+            case R.id.popup_clone:
+                showNote(notes.getNote(position));
+                publisher.subscribe(n -> {
+                    notes.addNote(n);
+                    adapter.notifyItemInserted(notes.getSize() - 1);
+                    recyclerView.scrollToPosition(notes.getSize() - 1);
+                });
+                return true;
+        }
+        return true;
     }
-
 }
