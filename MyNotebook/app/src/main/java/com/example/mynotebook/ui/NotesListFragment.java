@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,17 +25,14 @@ import com.example.mynotebook.MainActivity;
 import com.example.mynotebook.Navigation;
 import com.example.mynotebook.data.Note;
 import com.example.mynotebook.R;
-import com.example.mynotebook.data.Notes;
-import com.example.mynotebook.data.NotesImpl;
-import com.example.mynotebook.observe.Observer;
+import com.example.mynotebook.data.NotesSource;
+import com.example.mynotebook.data.NotesSourceImpl;
 import com.example.mynotebook.observe.Publisher;
 
 import java.util.Objects;
 
 import static com.example.mynotebook.data.Constants.ALL_NOTES;
-import static com.example.mynotebook.data.Constants.CURRENT_NOTE;
 import static com.example.mynotebook.data.Constants.DEFAULT_ANIMATION_DURATION;
-import static com.example.mynotebook.data.Constants.NOTES_LIST;
 
 public class NotesListFragment extends Fragment {
 
@@ -44,13 +40,15 @@ public class NotesListFragment extends Fragment {
     private NotesListAdapter adapter;
     private Navigation navigation;
     private Publisher publisher;
-    private Notes notes;
+    private NotesSource data;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (notes == null) {
-            notes = new NotesImpl(getResources());
+        if (data == null) {
+            data = new NotesSourceImpl(getResources()).init(it -> {
+                adapter.notifyDataSetChanged();
+            });
         }
     }
 
@@ -82,15 +80,15 @@ public class NotesListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.notes_recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new NotesListAdapter(notes, this);
+        adapter = new NotesListAdapter(data, this);
         recyclerView.setAdapter(adapter);
         addItemDevider();
         setItemAnimator();
 
         adapter.setOnItemClickListener((view1, position) -> {
-            showNote(notes.getNote(position));
+            showNote(data.getNote(position));
             publisher.subscribe(note -> {
-                notes.updateNote(position, note);
+                data.updateNote(position, note);
                 adapter.notifyItemChanged(position);
             });
         });
@@ -123,14 +121,14 @@ public class NotesListFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(ALL_NOTES, notes);
+        outState.putParcelable(ALL_NOTES, data);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            notes = savedInstanceState.getParcelable(ALL_NOTES);
+            data = savedInstanceState.getParcelable(ALL_NOTES);
         }
     }
 
@@ -148,9 +146,9 @@ public class NotesListFragment extends Fragment {
             case R.id.menu_add:
                 navigation.addFragment(new NoteFragment(), true);
                 publisher.subscribe(note -> {
-                    notes.addNote(note);
-                    adapter.notifyItemInserted(notes.getSize() - 1);
-                    recyclerView.scrollToPosition(notes.getSize() - 1);
+                    data.addNote(note);
+                    adapter.notifyItemInserted(data.getSize() - 1);
+                    recyclerView.scrollToPosition(data.getSize() - 1);
                 });
                 return true;
             case R.id.menu_sort:
@@ -166,9 +164,9 @@ public class NotesListFragment extends Fragment {
     private boolean selectPopupMenuItem(int itemId, int position) {
         switch (itemId) {
             case R.id.popup_edit:
-                showNote(notes.getNote(position));
+                showNote(data.getNote(position));
                 publisher.subscribe(n -> {
-                    notes.updateNote(position, n);
+                    data.updateNote(position, n);
                     adapter.notifyItemChanged(position);
                 });
                 return true;
@@ -176,15 +174,15 @@ public class NotesListFragment extends Fragment {
                 Toast.makeText(getContext(),
                         String.join(" ", getResources().getString(R.string.delete), String.valueOf(position)),
                         Toast.LENGTH_SHORT).show();
-                notes.deleteNote(position);
+                data.deleteNote(position);
                 adapter.notifyItemRemoved(position);
                 return true;
             case R.id.popup_clone:
-                showNote(notes.getNote(position));
+                showNote(data.getNote(position));
                 publisher.subscribe(n -> {
-                    notes.addNote(n);
-                    adapter.notifyItemInserted(notes.getSize() - 1);
-                    recyclerView.scrollToPosition(notes.getSize() - 1);
+                    data.addNote(n);
+                    adapter.notifyItemInserted(data.getSize() - 1);
+                    recyclerView.scrollToPosition(data.getSize() - 1);
                 });
                 return true;
         }

@@ -4,7 +4,8 @@ import android.os.Parcelable;
 
 import java.util.List;
 
-public interface Notes extends Parcelable {
+public interface NotesSource extends Parcelable {
+    NotesSource init(NotesSourceResponce cardsSourceResponse);
     List<Note> getNotes();
     Note getNote(int position);
     int getSize();
