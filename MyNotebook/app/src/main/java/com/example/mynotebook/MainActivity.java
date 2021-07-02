@@ -15,18 +15,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.mynotebook.ui.AddNoteFragment;
+import com.example.mynotebook.observe.Publisher;
+import com.example.mynotebook.ui.NoteFragment;
 import com.example.mynotebook.ui.NotesListFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawer;
+    private Navigation navigation;
+    private Publisher publisher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        navigation = new Navigation(getSupportFragmentManager());
+        publisher = new Publisher();
 
         Toolbar toolbar = initToolbar();
         initDrawer(toolbar);
@@ -64,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         NotesListFragment listFragment = new NotesListFragment();
-        fragmentTransaction.add(R.id.notes_list_layout, listFragment);
+        fragmentTransaction.add(R.id.notes_list_fragment, listFragment);
         fragmentTransaction.commit();
     }
 
@@ -88,42 +93,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        int id = menuItem.getItemId();
-        switch (id) {
-            case R.id.menu_add:
-                addFragment(new AddNoteFragment());
-                Toast.makeText(MainActivity.this, R.string.menu_add, Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu_sort:
-                Toast.makeText(MainActivity.this, R.string.menu_sort, Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu_search:
-                Toast.makeText(MainActivity.this, R.string.menu_search, Toast.LENGTH_SHORT).show();
-                return true;
-
-        }
-        return super.onOptionsItemSelected(menuItem);
-    }
-
-    private void addFragment(Fragment fragment){
-        //Получить менеджер фрагментов
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        // Открыть транзакцию
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.notes_list_layout, fragment);
-        // Добавить транзакцию в бэкстек
-        fragmentTransaction.addToBackStack(null);
-        // Закрыть транзакцию
-        fragmentTransaction.commit();
-    }
-
-    @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
+    }
+
+    public Navigation getNavigation() {
+        return navigation;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
     }
 }
