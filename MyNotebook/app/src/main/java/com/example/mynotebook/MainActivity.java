@@ -35,10 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = initToolbar();
         initDrawer(toolbar);
-
-        if(savedInstanceState == null) {
-            initStartFragment();
-        }
+        getNavigation().addFragment(new NotesListFragment(), false);
     }
 
     private Toolbar initToolbar() {
@@ -63,14 +60,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
         toggle.syncState();
-    }
-
-    private void initStartFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        NotesListFragment listFragment = new NotesListFragment();
-        fragmentTransaction.add(R.id.notes_list_fragment, listFragment);
-        fragmentTransaction.commit();
     }
 
     @Override
