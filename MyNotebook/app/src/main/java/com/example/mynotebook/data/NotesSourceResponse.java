@@ -1,5 +1,5 @@
 package com.example.mynotebook.data;
 
-public interface NotesSourceResponce {
+public interface NotesSourceResponse {
     void initialized(NotesSource notesSource);
 }

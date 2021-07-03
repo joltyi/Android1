@@ -22,8 +22,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyVi
     private OnItemClickListener itemClickListener;
     private OnItemLongClickListener itemLongClickListener;
 
-    public NotesListAdapter(NotesSource notesSource, Fragment fragment){
-        this.notesSource = notesSource;
+    public NotesListAdapter(Fragment fragment){
         this.fragment = fragment;
     }
 
@@ -43,6 +42,11 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyVi
     @Override
     public int getItemCount() {
         return notesSource.getSize();
+    }
+
+    public void setDataSource(NotesSource notesSource) {
+        this.notesSource = notesSource;
+        notifyDataSetChanged();
     }
 
     public void setOnItemClickListener(OnItemClickListener itemClickListener){

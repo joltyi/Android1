@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -26,6 +25,7 @@ import com.example.mynotebook.Navigation;
 import com.example.mynotebook.data.Note;
 import com.example.mynotebook.R;
 import com.example.mynotebook.data.NotesSource;
+import com.example.mynotebook.data.NotesSourceFirebaseImpl;
 import com.example.mynotebook.data.NotesSourceImpl;
 import com.example.mynotebook.observe.Publisher;
 
@@ -43,21 +43,13 @@ public class NotesListFragment extends Fragment {
     private NotesSource data;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (data == null) {
-            data = new NotesSourceImpl(getResources()).init(it -> {
-                adapter.notifyDataSetChanged();
-            });
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notes_list, container, false);
         setHasOptionsMenu(true);
+        data = new NotesSourceFirebaseImpl().init(it -> adapter.notifyDataSetChanged());
         initRecyclerView(view);
+        adapter.setDataSource(data);
         return view;
     }
 
@@ -80,7 +72,7 @@ public class NotesListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.notes_recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new NotesListAdapter(data, this);
+        adapter = new NotesListAdapter(this);
         recyclerView.setAdapter(adapter);
         addItemDevider();
         setItemAnimator();
@@ -116,20 +108,6 @@ public class NotesListFragment extends Fragment {
         animator.setChangeDuration(DEFAULT_ANIMATION_DURATION);
         animator.setRemoveDuration(DEFAULT_ANIMATION_DURATION);
         recyclerView.setItemAnimator(animator);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(ALL_NOTES, data);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            data = savedInstanceState.getParcelable(ALL_NOTES);
-        }
     }
 
     @Override

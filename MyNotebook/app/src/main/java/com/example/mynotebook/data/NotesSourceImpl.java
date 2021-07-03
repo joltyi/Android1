@@ -2,12 +2,13 @@ package com.example.mynotebook.data;
 
 import android.content.res.Resources;
 import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotesSourceImpl implements NotesSource {
+public class NotesSourceImpl implements NotesSource, Parcelable {
     private List<Note> notes;
     private Resources resources;
 
@@ -32,7 +33,7 @@ public class NotesSourceImpl implements NotesSource {
     };
 
     @Override
-    public NotesSource init(NotesSourceResponce cardsSourceResponse) {
+    public NotesSource init(NotesSourceResponse cardsSourceResponse) {
         //TODO get from resources
         notes = new ArrayList<Note>() {
             {
@@ -49,10 +50,6 @@ public class NotesSourceImpl implements NotesSource {
         return this;
     }
 
-    @Override
-    public List<Note> getNotes() {
-        return notes;
-    }
 
     @Override
     public Note getNote(int position) {
@@ -78,12 +75,6 @@ public class NotesSourceImpl implements NotesSource {
     public void addNote(Note note) {
         notes.add(note);
     }
-
-    @Override
-    public void clearCardData() {
-        notes.clear();
-    }
-
 
     @Override
     public int describeContents() {

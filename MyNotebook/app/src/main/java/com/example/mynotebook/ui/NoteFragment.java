@@ -121,6 +121,10 @@ public class NoteFragment extends Fragment {
         LocalTime time = LocalTime.now();
         LocalDateTime localDateTime = LocalDateTime.of(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), time.getHour(), time.getMinute());
 
-        return new Note(title, description, localDateTime);
+        Note newNote = new Note(title, description, localDateTime);;
+        if (currentNote != null) {
+            newNote.setId(currentNote.getId());
+        }
+        return newNote;
     }
 }
