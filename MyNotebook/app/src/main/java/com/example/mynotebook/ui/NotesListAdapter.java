@@ -12,21 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mynotebook.R;
 import com.example.mynotebook.data.Note;
-import com.example.mynotebook.data.Notes;
+import com.example.mynotebook.data.NotesSource;
 import com.example.mynotebook.utils.DateUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyViewHolder> {
 
-    private Notes notes;
+    private NotesSource notesSource;
     private Fragment fragment;
     private OnItemClickListener itemClickListener;
     private OnItemLongClickListener itemLongClickListener;
 
-    public NotesListAdapter(Notes notes, Fragment fragment){
-        this.notes = notes;
+    public NotesListAdapter(Fragment fragment){
         this.fragment = fragment;
     }
 
@@ -40,12 +36,17 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.setData(notes.getNote(position));
+        holder.setData(notesSource.getNote(position));
     }
 
     @Override
     public int getItemCount() {
-        return notes.getSize();
+        return notesSource.getSize();
+    }
+
+    public void setDataSource(NotesSource notesSource) {
+        this.notesSource = notesSource;
+        notifyDataSetChanged();
     }
 
     public void setOnItemClickListener(OnItemClickListener itemClickListener){

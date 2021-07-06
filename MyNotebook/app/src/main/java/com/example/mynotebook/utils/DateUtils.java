@@ -1,7 +1,9 @@
 package com.example.mynotebook.utils;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class DateUtils {
 
@@ -9,5 +11,13 @@ public class DateUtils {
 
     public static String dateToString(LocalDateTime localDateTime) {
         return localDateTime.format(FORMATTER);
+    }
+
+    public static Date toDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static LocalDateTime toLocalDateTime(Date date) {
+        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 }

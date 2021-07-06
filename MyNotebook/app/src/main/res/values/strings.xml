@@ -18,4 +18,6 @@
     <string name="example">My Notebook</string>
     <string name="delete">Delete</string>
     <string name="clone">Clone</string>
+    <string name="login">Login</string>
+    <string name="please_signin">Please SignIn</string>
 </resources>
