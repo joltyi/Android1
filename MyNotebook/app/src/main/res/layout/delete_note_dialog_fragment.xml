@@ -26,17 +26,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/no_delete_note_dialog_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/delete_note_dialog_button_no" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/confirm_delete_note_dialog_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/confirm_delete_button" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/no_delete_note_dialog_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/delete_note_dialog_button_no" />
     </LinearLayout>
 
 

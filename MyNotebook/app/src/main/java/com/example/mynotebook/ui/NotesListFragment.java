@@ -28,10 +28,13 @@ import com.example.mynotebook.R;
 import com.example.mynotebook.data.NotesSource;
 import com.example.mynotebook.data.NotesSourceFirebaseImpl;
 import com.example.mynotebook.observe.Publisher;
+import com.example.mynotebook.ui.dialog.DeleteDialogFragment;
+import com.example.mynotebook.ui.dialog.OnDeleteDialogListener;
 
 import java.util.Objects;
 
 import static com.example.mynotebook.data.Constants.DEFAULT_ANIMATION_DURATION;
+import static com.example.mynotebook.data.Constants.DELETE_FRAGMENT_TAG;
 
 public class NotesListFragment extends Fragment {
 
@@ -159,8 +162,22 @@ public class NotesListFragment extends Fragment {
     }
 
     private boolean deleteNote(int position) {
-        data.deleteNote(position);
-        adapter.notifyItemRemoved(position);
+        DeleteDialogFragment deleteDlgFragment = new DeleteDialogFragment();
+        deleteDlgFragment.setCancelable(false);
+        deleteDlgFragment.setOnDialogListener(new OnDeleteDialogListener() {
+            @Override
+            public void onDelete() {
+                data.deleteNote(position);
+                adapter.notifyItemRemoved(position);
+                deleteDlgFragment.dismiss();
+            }
+
+            @Override
+            public void onCancelDelete() {
+                deleteDlgFragment.dismiss();
+            }
+        });
+        deleteDlgFragment.show(requireActivity().getSupportFragmentManager(), DELETE_FRAGMENT_TAG);
         return true;
     }
 
