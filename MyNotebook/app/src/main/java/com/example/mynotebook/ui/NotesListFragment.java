@@ -1,5 +1,6 @@
 package com.example.mynotebook.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -26,12 +27,10 @@ import com.example.mynotebook.data.Note;
 import com.example.mynotebook.R;
 import com.example.mynotebook.data.NotesSource;
 import com.example.mynotebook.data.NotesSourceFirebaseImpl;
-import com.example.mynotebook.data.NotesSourceImpl;
 import com.example.mynotebook.observe.Publisher;
 
 import java.util.Objects;
 
-import static com.example.mynotebook.data.Constants.ALL_NOTES;
 import static com.example.mynotebook.data.Constants.DEFAULT_ANIMATION_DURATION;
 
 public class NotesListFragment extends Fragment {
@@ -77,23 +76,8 @@ public class NotesListFragment extends Fragment {
         addItemDevider();
         setItemAnimator();
 
-        adapter.setOnItemClickListener((view1, position) -> {
-            showNote(data.getNote(position));
-            publisher.subscribe(note -> {
-                data.updateNote(position, note);
-                adapter.notifyItemChanged(position);
-            });
-        });
-
-        adapter.setOnItemLongClickListener((view1, position) -> {
-            Activity activity = requireActivity();
-            PopupMenu popupMenu = new PopupMenu(activity, view1);
-            Menu menu = popupMenu.getMenu();
-            activity.getMenuInflater().inflate(R.menu.popup_menu, menu);
-            popupMenu.setOnMenuItemClickListener(item -> selectPopupMenuItem(item.getItemId(), position));
-            popupMenu.show();
-
-        });
+        adapter.setOnItemClickListener((view1, position) -> updateNote(position));
+        adapter.setOnItemLongClickListener(this::showPopUpMenu);
     }
 
     private void addItemDevider() {
@@ -115,55 +99,87 @@ public class NotesListFragment extends Fragment {
         return selectMenuItem(menuItem.getItemId()) || super.onOptionsItemSelected(menuItem);
     }
 
-    private void showNote(Note note) {
-        navigation.addFragment(NoteFragment.newInstance(note), true);
-    }
-
+    @SuppressLint("NonConstantResourceId")
     private boolean selectMenuItem(int itemId) {
         switch (itemId) {
             case R.id.menu_add:
-                navigation.addFragment(new NoteFragment(), true);
-                publisher.subscribe(note -> {
-                    data.addNote(note);
-                    adapter.notifyItemInserted(data.getSize() - 1);
-                    recyclerView.scrollToPosition(data.getSize() - 1);
-                });
-                return true;
+                return addNote();
             case R.id.menu_sort:
-                Toast.makeText(getContext(), R.string.menu_sort, Toast.LENGTH_SHORT).show();
-                return true;
+                return sortNotes();
             case R.id.menu_search:
-                Toast.makeText(getContext(), R.string.menu_search, Toast.LENGTH_SHORT).show();
-                return true;
+                return searchNote();
         }
         return false;
     }
 
+    @SuppressLint("NonConstantResourceId")
     private boolean selectPopupMenuItem(int itemId, int position) {
         switch (itemId) {
             case R.id.popup_edit:
-                showNote(data.getNote(position));
-                publisher.subscribe(n -> {
-                    data.updateNote(position, n);
-                    adapter.notifyItemChanged(position);
-                });
-                return true;
+                return updateNote(position);
             case R.id.popup_delete:
-                Toast.makeText(getContext(),
-                        String.join(" ", getResources().getString(R.string.delete), String.valueOf(position)),
-                        Toast.LENGTH_SHORT).show();
-                data.deleteNote(position);
-                adapter.notifyItemRemoved(position);
-                return true;
+                return deleteNote(position);
             case R.id.popup_clone:
-                showNote(data.getNote(position));
-                publisher.subscribe(n -> {
-                    data.addNote(n);
-                    adapter.notifyItemInserted(data.getSize() - 1);
-                    recyclerView.scrollToPosition(data.getSize() - 1);
-                });
-                return true;
+                return cloneNote(position);
         }
         return true;
+    }
+
+    private void showNoteDetails(int position) {
+        navigation.addFragment(NoteFragment.newInstance(data.getNote(position)), true);
+    }
+
+    private boolean addNote() {
+        navigation.addFragment(new NoteFragment(), true);
+        publisher.subscribe(note -> {
+            data.addNote(note);
+            adapter.notifyItemInserted(data.getSize() - 1);
+            recyclerView.scrollToPosition(data.getSize() - 1);
+        });
+        return true;
+    }
+
+    private boolean updateNote(int position) {
+        showNoteDetails(position);
+        publisher.subscribe(n -> {
+            data.updateNote(position, n);
+            adapter.notifyItemChanged(position);
+        });
+        return true;
+    }
+
+    private boolean cloneNote(int position) {
+        showNoteDetails(position);
+        publisher.subscribe(n -> {
+            data.addNote(n);
+            adapter.notifyItemInserted(data.getSize() - 1);
+            recyclerView.scrollToPosition(data.getSize() - 1);
+        });
+        return true;
+    }
+
+    private boolean deleteNote(int position) {
+        data.deleteNote(position);
+        adapter.notifyItemRemoved(position);
+        return true;
+    }
+
+    private boolean sortNotes() {
+        Toast.makeText(getContext(), R.string.menu_sort, Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    private boolean searchNote() {
+        Toast.makeText(getContext(), R.string.menu_search, Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    private void showPopUpMenu(View view, int position) {
+        Activity activity = requireActivity();
+        PopupMenu popupMenu = new PopupMenu(activity, view);
+        Menu menu = popupMenu.getMenu();
+        activity.getMenuInflater().inflate(R.menu.popup_menu, menu);
+        popupMenu.setOnMenuItemClickListener(item -> selectPopupMenuItem(item.getItemId(), position));
+        popupMenu.show();
     }
 }
