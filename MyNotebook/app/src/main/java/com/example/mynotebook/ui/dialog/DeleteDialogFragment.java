@@ -14,24 +14,24 @@ import com.google.android.material.button.MaterialButton;
 
 public class DeleteDialogFragment extends DialogFragment {
 
-    private OnDeleteDialogListener deleteDlgListener;
+    private OnDeleteListener deleteListener;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         final View contentView = requireActivity().getLayoutInflater().
-                inflate(R.layout.delete_note_dialog_fragment, null);
+                inflate(R.layout.dialog_delete_note, null);
         MaterialButton confirmDelete = contentView.findViewById(R.id.confirm_delete_note_dialog_button);
         confirmDelete.setOnClickListener(v -> {
-            if (deleteDlgListener != null) {
-                deleteDlgListener.onDelete();
+            if (deleteListener != null) {
+                deleteListener.onDelete();
                 dismiss();
             }
         });
         MaterialButton cancelDelete = contentView.findViewById(R.id.no_delete_note_dialog_button);
         cancelDelete.setOnClickListener(v -> {
-            if (deleteDlgListener != null) {
-                deleteDlgListener.onCancelDelete();
+            if (deleteListener != null) {
+                deleteListener.onCancelDelete();
                 dismiss();
             }
         });
@@ -40,7 +40,7 @@ public class DeleteDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    public void setOnDialogListener(OnDeleteDialogListener deleteDlgListener) {
-        this.deleteDlgListener = deleteDlgListener;
+    public void setOnDialogListener(OnDeleteListener deleteDlgListener) {
+        this.deleteListener = deleteDlgListener;
     }
 }

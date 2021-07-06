@@ -7,6 +7,11 @@
         android:title="@string/popup_edit" />
 
     <item
+        android:id="@+id/popup_rename"
+        android:orderInCategory="30"
+        android:title="@string/popup_rename" />
+
+    <item
         android:id="@+id/popup_delete"
         android:orderInCategory="30"
         android:title="@string/delete" />

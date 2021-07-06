@@ -29,12 +29,15 @@ import com.example.mynotebook.data.NotesSource;
 import com.example.mynotebook.data.NotesSourceFirebaseImpl;
 import com.example.mynotebook.observe.Publisher;
 import com.example.mynotebook.ui.dialog.DeleteDialogFragment;
-import com.example.mynotebook.ui.dialog.OnDeleteDialogListener;
+import com.example.mynotebook.ui.dialog.OnDeleteListener;
+import com.example.mynotebook.ui.dialog.OnRenameListener;
+import com.example.mynotebook.ui.dialog.RenameNoteDialogFragment;
 
 import java.util.Objects;
 
 import static com.example.mynotebook.data.Constants.DEFAULT_ANIMATION_DURATION;
 import static com.example.mynotebook.data.Constants.DELETE_FRAGMENT_TAG;
+import static com.example.mynotebook.data.Constants.RENAME_NOTE_TAG;
 
 public class NotesListFragment extends Fragment {
 
@@ -120,6 +123,8 @@ public class NotesListFragment extends Fragment {
         switch (itemId) {
             case R.id.popup_edit:
                 return updateNote(position);
+            case R.id.popup_rename:
+                return renameNote(position);
             case R.id.popup_delete:
                 return deleteNote(position);
             case R.id.popup_clone:
@@ -151,6 +156,19 @@ public class NotesListFragment extends Fragment {
         return true;
     }
 
+    private boolean renameNote(int position) {
+        Note note = data.getNote(position);
+        RenameNoteDialogFragment renameDialog = new RenameNoteDialogFragment();
+        renameDialog.setTitle(note.getTitle());
+        renameDialog.setRenameListener(() -> {
+            note.setTitle(renameDialog.getTitle());
+            data.updateNote(position, note);
+            adapter.notifyItemChanged(position);
+        });
+        renameDialog.show(requireActivity().getSupportFragmentManager(), RENAME_NOTE_TAG);
+        return true;
+    }
+
     private boolean cloneNote(int position) {
         showNoteDetails(position);
         publisher.subscribe(n -> {
@@ -164,7 +182,7 @@ public class NotesListFragment extends Fragment {
     private boolean deleteNote(int position) {
         DeleteDialogFragment deleteDlgFragment = new DeleteDialogFragment();
         deleteDlgFragment.setCancelable(false);
-        deleteDlgFragment.setOnDialogListener(new OnDeleteDialogListener() {
+        deleteDlgFragment.setOnDialogListener(new OnDeleteListener() {
             @Override
             public void onDelete() {
                 data.deleteNote(position);

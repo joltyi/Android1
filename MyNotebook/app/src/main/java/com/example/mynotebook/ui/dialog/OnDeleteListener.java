@@ -1,6 +1,6 @@
 package com.example.mynotebook.ui.dialog;
 
-public interface OnDeleteDialogListener {
+public interface OnDeleteListener {
     void onDelete();
     void onCancelDelete();
 }
