@@ -20,4 +20,8 @@
     <string name="clone">Clone</string>
     <string name="login">Login</string>
     <string name="please_signin">Please SignIn</string>
+    <string name="delete_note_dialog_button_no">NO</string>
+    <string name="confirm_delete_button">YES</string>
+    <string name="delete_note_txt">Delete note?</string>
+    <string name="delete_note_txt1">Can not be undone</string>
 </resources>
