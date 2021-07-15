@@ -1,6 +1,10 @@
 package com.example.mynotebook.ui.dialog;
 
-public interface OnDeleteListener {
-    void onDelete();
-    void onCancelDelete();
+import androidx.fragment.app.DialogFragment;
+
+import java.io.Serializable;
+
+public interface OnDeleteListener extends Serializable {
+    void onDelete(DialogFragment dialog);
+    void onCancelDelete(DialogFragment dialog);
 }

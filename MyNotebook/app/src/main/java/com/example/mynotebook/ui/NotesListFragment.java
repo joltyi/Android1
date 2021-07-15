@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -39,7 +40,9 @@ import static com.example.mynotebook.data.Constants.DEFAULT_ANIMATION_DURATION;
 import static com.example.mynotebook.data.Constants.DELETE_FRAGMENT_TAG;
 import static com.example.mynotebook.data.Constants.RENAME_NOTE_TAG;
 
-public class NotesListFragment extends Fragment {
+public class NotesListFragment extends Fragment implements OnDeleteListener {
+
+    public final static String TAG = "NotesListFragment";
 
     private RecyclerView recyclerView;
     private NotesListAdapter adapter;
@@ -126,7 +129,7 @@ public class NotesListFragment extends Fragment {
             case R.id.popup_rename:
                 return renameNote(position);
             case R.id.popup_delete:
-                return deleteNote(position);
+                return deleteNote();
             case R.id.popup_clone:
                 return cloneNote(position);
         }
@@ -179,23 +182,10 @@ public class NotesListFragment extends Fragment {
         return true;
     }
 
-    private boolean deleteNote(int position) {
-        DeleteDialogFragment deleteDlgFragment = new DeleteDialogFragment();
-        deleteDlgFragment.setCancelable(false);
-        deleteDlgFragment.setOnDialogListener(new OnDeleteListener() {
-            @Override
-            public void onDelete() {
-                data.deleteNote(position);
-                adapter.notifyItemRemoved(position);
-                deleteDlgFragment.dismiss();
-            }
-
-            @Override
-            public void onCancelDelete() {
-                deleteDlgFragment.dismiss();
-            }
-        });
+    private boolean deleteNote() {
+        DialogFragment deleteDlgFragment = new DeleteDialogFragment();
         deleteDlgFragment.show(requireActivity().getSupportFragmentManager(), DELETE_FRAGMENT_TAG);
+        requireActivity().getSupportFragmentManager().executePendingTransactions();
         return true;
     }
 
@@ -216,5 +206,18 @@ public class NotesListFragment extends Fragment {
         activity.getMenuInflater().inflate(R.menu.popup_menu, menu);
         popupMenu.setOnMenuItemClickListener(item -> selectPopupMenuItem(item.getItemId(), position));
         popupMenu.show();
+    }
+
+    @Override
+    public void onDelete(DialogFragment dialog) {
+        int position = adapter.getMenuPosition();
+        data.deleteNote(position);
+        adapter.notifyItemRemoved(position);
+        dialog.dismiss();
+    }
+
+    @Override
+    public void onCancelDelete(DialogFragment dialog) {
+        dialog.dismiss();
     }
 }

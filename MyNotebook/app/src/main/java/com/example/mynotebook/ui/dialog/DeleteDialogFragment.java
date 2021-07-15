@@ -2,6 +2,8 @@ package com.example.mynotebook.ui.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,38 +11,35 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.mynotebook.MainActivity;
 import com.example.mynotebook.R;
+import com.example.mynotebook.ui.NotesListFragment;
 import com.google.android.material.button.MaterialButton;
+
+import static com.example.mynotebook.data.Constants.DELETE_FRAGMENT_TAG;
 
 public class DeleteDialogFragment extends DialogFragment {
 
-    private OnDeleteListener deleteListener;
+    private OnDeleteListener listener;
+
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        final View contentView = requireActivity().getLayoutInflater().
-                inflate(R.layout.dialog_delete_note, null);
-        MaterialButton confirmDelete = contentView.findViewById(R.id.confirm_delete_note_dialog_button);
-        confirmDelete.setOnClickListener(v -> {
-            if (deleteListener != null) {
-                deleteListener.onDelete();
-                dismiss();
-            }
-        });
-        MaterialButton cancelDelete = contentView.findViewById(R.id.no_delete_note_dialog_button);
-        cancelDelete.setOnClickListener(v -> {
-            if (deleteListener != null) {
-                deleteListener.onCancelDelete();
-                dismiss();
-            }
-        });
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity())
-                .setView(contentView);
+        listener = (OnDeleteListener) requireActivity().getSupportFragmentManager().findFragmentById(R.id.notes_list_fragment);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false)
+                .setMessage(R.string.delete_note_txt)
+                .setPositiveButton(R.string.confirm_delete_button, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        listener.onDelete(DeleteDialogFragment.this);
+                    }
+                })
+                .setNegativeButton(R.string.delete_note_dialog_button_no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        listener.onCancelDelete(DeleteDialogFragment.this);
+                    }
+                });
         return builder.create();
-    }
-
-    public void setOnDialogListener(OnDeleteListener deleteDlgListener) {
-        this.deleteListener = deleteDlgListener;
     }
 }
