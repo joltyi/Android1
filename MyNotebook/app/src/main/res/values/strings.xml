@@ -11,6 +11,7 @@
     <string name="stub_add_note_text">Stub Add Note Text</string>
     <string name="stub_edit_note_text">Stub Edit Note Text</string>
     <string name="popup_edit">Edit</string>
+    <string name="popup_rename">Rename</string>
     <string name="drawer_open">Open navigation</string>
     <string name="drawer_close">Close navigation</string>
     <string name="about">About</string>
@@ -20,4 +21,10 @@
     <string name="clone">Clone</string>
     <string name="login">Login</string>
     <string name="please_signin">Please SignIn</string>
+    <string name="delete_note_dialog_button_no">NO</string>
+    <string name="confirm_delete_button">YES</string>
+    <string name="delete_note_txt">Delete note?</string>
+    <string name="delete_note_txt1">This action can not be undone</string>
+    <string name="rename_note_title">Rename Note</string>
+    <string name="rename_note_done">Done</string>
 </resources>

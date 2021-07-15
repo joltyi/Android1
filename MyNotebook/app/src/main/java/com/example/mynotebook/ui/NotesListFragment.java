@@ -1,11 +1,13 @@
 package com.example.mynotebook.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -26,15 +28,21 @@ import com.example.mynotebook.data.Note;
 import com.example.mynotebook.R;
 import com.example.mynotebook.data.NotesSource;
 import com.example.mynotebook.data.NotesSourceFirebaseImpl;
-import com.example.mynotebook.data.NotesSourceImpl;
 import com.example.mynotebook.observe.Publisher;
+import com.example.mynotebook.ui.dialog.DeleteDialogFragment;
+import com.example.mynotebook.ui.dialog.OnDeleteListener;
+import com.example.mynotebook.ui.dialog.OnRenameListener;
+import com.example.mynotebook.ui.dialog.RenameNoteDialogFragment;
 
 import java.util.Objects;
 
-import static com.example.mynotebook.data.Constants.ALL_NOTES;
 import static com.example.mynotebook.data.Constants.DEFAULT_ANIMATION_DURATION;
+import static com.example.mynotebook.data.Constants.DELETE_FRAGMENT_TAG;
+import static com.example.mynotebook.data.Constants.RENAME_NOTE_TAG;
 
-public class NotesListFragment extends Fragment {
+public class NotesListFragment extends Fragment implements OnDeleteListener {
+
+    public final static String TAG = "NotesListFragment";
 
     private RecyclerView recyclerView;
     private NotesListAdapter adapter;
@@ -77,23 +85,8 @@ public class NotesListFragment extends Fragment {
         addItemDevider();
         setItemAnimator();
 
-        adapter.setOnItemClickListener((view1, position) -> {
-            showNote(data.getNote(position));
-            publisher.subscribe(note -> {
-                data.updateNote(position, note);
-                adapter.notifyItemChanged(position);
-            });
-        });
-
-        adapter.setOnItemLongClickListener((view1, position) -> {
-            Activity activity = requireActivity();
-            PopupMenu popupMenu = new PopupMenu(activity, view1);
-            Menu menu = popupMenu.getMenu();
-            activity.getMenuInflater().inflate(R.menu.popup_menu, menu);
-            popupMenu.setOnMenuItemClickListener(item -> selectPopupMenuItem(item.getItemId(), position));
-            popupMenu.show();
-
-        });
+        adapter.setOnItemClickListener((view1, position) -> updateNote(position));
+        adapter.setOnItemLongClickListener(this::showPopUpMenu);
     }
 
     private void addItemDevider() {
@@ -115,55 +108,116 @@ public class NotesListFragment extends Fragment {
         return selectMenuItem(menuItem.getItemId()) || super.onOptionsItemSelected(menuItem);
     }
 
-    private void showNote(Note note) {
-        navigation.addFragment(NoteFragment.newInstance(note), true);
-    }
-
+    @SuppressLint("NonConstantResourceId")
     private boolean selectMenuItem(int itemId) {
         switch (itemId) {
             case R.id.menu_add:
-                navigation.addFragment(new NoteFragment(), true);
-                publisher.subscribe(note -> {
-                    data.addNote(note);
-                    adapter.notifyItemInserted(data.getSize() - 1);
-                    recyclerView.scrollToPosition(data.getSize() - 1);
-                });
-                return true;
+                return addNote();
             case R.id.menu_sort:
-                Toast.makeText(getContext(), R.string.menu_sort, Toast.LENGTH_SHORT).show();
-                return true;
+                return sortNotes();
             case R.id.menu_search:
-                Toast.makeText(getContext(), R.string.menu_search, Toast.LENGTH_SHORT).show();
-                return true;
+                return searchNote();
         }
         return false;
     }
 
+    @SuppressLint("NonConstantResourceId")
     private boolean selectPopupMenuItem(int itemId, int position) {
         switch (itemId) {
             case R.id.popup_edit:
-                showNote(data.getNote(position));
-                publisher.subscribe(n -> {
-                    data.updateNote(position, n);
-                    adapter.notifyItemChanged(position);
-                });
-                return true;
+                return updateNote(position);
+            case R.id.popup_rename:
+                return renameNote(position);
             case R.id.popup_delete:
-                Toast.makeText(getContext(),
-                        String.join(" ", getResources().getString(R.string.delete), String.valueOf(position)),
-                        Toast.LENGTH_SHORT).show();
-                data.deleteNote(position);
-                adapter.notifyItemRemoved(position);
-                return true;
+                return deleteNote();
             case R.id.popup_clone:
-                showNote(data.getNote(position));
-                publisher.subscribe(n -> {
-                    data.addNote(n);
-                    adapter.notifyItemInserted(data.getSize() - 1);
-                    recyclerView.scrollToPosition(data.getSize() - 1);
-                });
-                return true;
+                return cloneNote(position);
         }
         return true;
+    }
+
+    private void showNoteDetails(int position) {
+        navigation.addFragment(NoteFragment.newInstance(data.getNote(position)), true);
+    }
+
+    private boolean addNote() {
+        navigation.addFragment(new NoteFragment(), true);
+        publisher.subscribe(note -> {
+            data.addNote(note);
+            adapter.notifyItemInserted(data.getSize() - 1);
+            recyclerView.scrollToPosition(data.getSize() - 1);
+        });
+        return true;
+    }
+
+    private boolean updateNote(int position) {
+        showNoteDetails(position);
+        publisher.subscribe(n -> {
+            data.updateNote(position, n);
+            adapter.notifyItemChanged(position);
+        });
+        return true;
+    }
+
+    private boolean renameNote(int position) {
+        Note note = data.getNote(position);
+        RenameNoteDialogFragment renameDialog = new RenameNoteDialogFragment();
+        renameDialog.setTitle(note.getTitle());
+        renameDialog.setRenameListener(() -> {
+            note.setTitle(renameDialog.getTitle());
+            data.updateNote(position, note);
+            adapter.notifyItemChanged(position);
+        });
+        renameDialog.show(requireActivity().getSupportFragmentManager(), RENAME_NOTE_TAG);
+        return true;
+    }
+
+    private boolean cloneNote(int position) {
+        showNoteDetails(position);
+        publisher.subscribe(n -> {
+            data.addNote(n);
+            adapter.notifyItemInserted(data.getSize() - 1);
+            recyclerView.scrollToPosition(data.getSize() - 1);
+        });
+        return true;
+    }
+
+    private boolean deleteNote() {
+        DialogFragment deleteDlgFragment = new DeleteDialogFragment();
+        deleteDlgFragment.show(requireActivity().getSupportFragmentManager(), DELETE_FRAGMENT_TAG);
+        requireActivity().getSupportFragmentManager().executePendingTransactions();
+        return true;
+    }
+
+    private boolean sortNotes() {
+        Toast.makeText(getContext(), R.string.menu_sort, Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    private boolean searchNote() {
+        Toast.makeText(getContext(), R.string.menu_search, Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    private void showPopUpMenu(View view, int position) {
+        Activity activity = requireActivity();
+        PopupMenu popupMenu = new PopupMenu(activity, view);
+        Menu menu = popupMenu.getMenu();
+        activity.getMenuInflater().inflate(R.menu.popup_menu, menu);
+        popupMenu.setOnMenuItemClickListener(item -> selectPopupMenuItem(item.getItemId(), position));
+        popupMenu.show();
+    }
+
+    @Override
+    public void onDelete(DialogFragment dialog) {
+        int position = adapter.getMenuPosition();
+        data.deleteNote(position);
+        adapter.notifyItemRemoved(position);
+        dialog.dismiss();
+    }
+
+    @Override
+    public void onCancelDelete(DialogFragment dialog) {
+        dialog.dismiss();
     }
 }

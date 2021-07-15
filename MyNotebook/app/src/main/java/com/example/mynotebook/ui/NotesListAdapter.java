@@ -21,6 +21,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyVi
     private Fragment fragment;
     private OnItemClickListener itemClickListener;
     private OnItemLongClickListener itemLongClickListener;
+    private int menuPosition;
 
     public NotesListAdapter(Fragment fragment){
         this.fragment = fragment;
@@ -44,6 +45,10 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyVi
         return notesSource.getSize();
     }
 
+    public int getMenuPosition(){
+        return menuPosition;
+    }
+
     public void setDataSource(NotesSource notesSource) {
         this.notesSource = notesSource;
         notifyDataSetChanged();
@@ -55,15 +60,6 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyVi
 
     public void setOnItemLongClickListener(OnItemLongClickListener itemLongClickListener){
         this.itemLongClickListener = itemLongClickListener;
-    }
-
-    private void registerContextMenu(View itemView) {
-        if (fragment != null) {
-            itemView.setOnLongClickListener(v -> {
-                return false;
-            });
-            fragment.registerForContextMenu(itemView);
-        }
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -85,6 +81,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyVi
             });
             cardLayout.setOnLongClickListener(v -> {
                 if (itemLongClickListener != null) {
+                    menuPosition = getLayoutPosition();
                     itemLongClickListener.onItemLongClick(v, getAdapterPosition());
                 }
                 return true;
@@ -94,6 +91,16 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.MyVi
         public void setData(Note note){
             title.setText(note.getTitle());
             date.setText(DateUtils.dateToString(note.getCreateDateTime()));
+        }
+
+        private void registerContextMenu(View itemView) {
+            if (fragment != null) {
+                itemView.setOnLongClickListener(v -> {
+                    menuPosition = getLayoutPosition();
+                    return false;
+                });
+                fragment.registerForContextMenu(itemView);
+            }
         }
     }
 
